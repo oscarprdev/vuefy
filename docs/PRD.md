@@ -11,21 +11,21 @@ This creates a gap: Vue developers who want headless primitives, Tailwind stylin
 
 ## Solution
 
-**Vuefy** (CLI: `vui`) — a CLI-driven, source-code-copy design system for Vue 3 that brings the shadcn/ui experience to the Vue ecosystem.
+**Vuefy** (CLI: `vuefy`) — a CLI-driven, source-code-copy design system for Vue 3 that brings the shadcn/ui experience to the Vue ecosystem.
 
-Vuefy wraps vuetify0's headless primitives with production-ready Tailwind CSS styling and ships them as a CLI registry. Developers run `vui init` to set up their project, then `vui add button dialog tabs` to copy individual component source files into their project. They own every line of generated code — customize it, extend it, delete it.
+Vuefy wraps vuetify0's headless primitives with production-ready Tailwind CSS styling and ships them as a CLI registry. Developers run `vuefy init` to set up their project, then `vuefy add button dialog tabs` to copy individual component source files into their project. They own every line of generated code — customize it, extend it, delete it.
 
 The system consists of:
-- **`@vui/cli`** — the CLI tool that scaffolds projects and copies components
-- **`@vui/core`** — the component registry containing all ~28-30 UI component templates and their metadata
+- **`@vuefy/cli`** — the CLI tool that scaffolds projects and copies components
+- **`@vuefy/core`** — the component registry containing all ~28-30 UI component templates and their metadata
 - **VitePress documentation site** with live examples
 
-Each component is a single `.vue` SFC that wraps v0 headless primitives internally and exposes a clean, slot-based API. The user never interacts with v0 primitives directly — they only use the vui wrapper's props, slots, and sub-components.
+Each component is a single `.vue` SFC that wraps v0 headless primitives internally and exposes a clean, slot-based API. The user never interacts with v0 primitives directly — they only use the vuefy wrapper's props, slots, and sub-components.
 
 ## User Stories
 
 1. As a Vue developer, I want to run a single CLI command to initialize a design system in my project, so that I can start building UIs without writing boilerplate.
-2. As a Vue developer, I want to selectively add only the UI components I need (e.g., `vui add button dialog`), so that I don't bloat my project with unused code.
+2. As a Vue developer, I want to selectively add only the UI components I need (e.g., `vuefy add button dialog`), so that I don't bloat my project with unused code.
 3. As a Vue developer, I want the CLI to automatically detect whether I'm using Vite or Nuxt, so that the setup is tailored to my framework without manual configuration.
 4. As a Vue developer, I want to choose between a dark-first and light-first color theme during initialization, so that the default tokens match my project's aesthetic.
 5. As a Vue developer, I want to modify the generated CSS tokens after initialization, so that I can customize colors, spacing, and typography to match my brand without fighting the system.
@@ -50,85 +50,196 @@ Each component is a single `.vue` SFC that wraps v0 headless primitives internal
 24. As a Vue developer, I want unit tests for all components using Vitest and Vue Test Utils, so that I can trust component behavior and catch regressions.
 25. As a Vue developer, I want GitHub Actions CI/CD that runs lint, test, and typecheck on every PR and automates publishing via changesets, so that the project maintains quality and releases are reliable.
 26. As a Vue developer working on data-heavy dashboards, I want a dark-first default theme variant, so that my UI is optimized for long viewing sessions with data visualization.
-27. As a Vue developer, I want infrastructure primitives (Atom, Portal, Presence) to be available from vuetify0 directly rather than shipped as vui components, so that vui focuses on UI-level components that end users interact with.
+27. As a Vue developer, I want infrastructure primitives (Atom, Portal, Presence) to be available from vuetify0 directly rather than shipped as vuefy components, so that vuefy focuses on UI-level components that end users interact with.
 28. As a Vue developer, I want to import components from `@/components/ui/button.vue` using my project's path alias, so that imports are consistent with the rest of my codebase.
 29. As a Vue developer, I want no i18n in v1, so that the initial scope stays focused and I can add localization through my own means if needed.
-30. As a Vue developer, I want the CLI tool to be runnable via `npx vui@latest` without installing it globally, so that I can use it in any project without polluting my global node_modules.
+30. As a Vue developer, I want the CLI tool to be runnable via `npx vuefy@latest` without installing it globally, so that I can use it in any project without polluting my global node_modules.
 
 ## Implementation Decisions
 
 ### Architecture
 - **CLI codegen model** (not a runtime package): Components are copied as source code into the user's project. The user owns every line. This is the core shadcn/ui philosophy.
-- **Registry-based distribution**: The CLI fetches component templates from the `@vui/core` npm package (JSON registry + source files). Users add components individually.
-- **Monorepo structure**: pnpm workspaces with `packages/cli` (the CLI tool, published as `vui` via bin field), `packages/core` (component registry), and `docs/` (VitePress documentation).
+- **Registry-based distribution**: The CLI fetches component templates from the `@vuefy/core` npm package (JSON registry + source files). Users add components individually.
+- **Monorepo structure**: pnpm workspaces with `packages/cli` (the CLI tool, published as `vuefy` via bin field), `packages/core` (component registry), and `docs/` (VitePress documentation).
 
 ### Component Model
 
 #### Wrapper Pattern
 
-Every vui component is a **wrapper around v0 headless primitives**. The wrapper hides v0 internals and exposes a clean, intuitive API. The user never imports or interacts with v0 primitives directly.
+Every vuefy component is a **wrapper around v0 headless primitives**. The wrapper hides v0 internals and exposes a clean, intuitive API. The user never imports or interacts with v0 primitives directly.
 
-Each component is a single `.vue` SFC using `<script setup lang="ts">` with **render functions** (`h()`) in `setup()`. The file exports the main component as default and attaches sub-components as namespace properties.
+Each component is a single `.vue` SFC using `<script setup lang="ts">` with a **`<template>` block** for rendering. The file uses compiler macros (`defineProps`, `defineEmits`, `defineSlots`, `defineOptions`) and Vue's reactivity system (`computed`, `ref`) — no manual `defineComponent` wrappers or `h()` render functions.
 
-**TypeScript types** are defined inline using `defineProps<T>()` and `defineSlots<T>()` inside the SFC.
+**TypeScript types** are defined as standalone interfaces passed to `defineProps<T>()` and `defineSlots<T>()` inside the SFC. Props with defaults use `withDefaults()`.
 
-**Example — Dialog:**
+Props are declared as **required** in the interface (no `?`) — `withDefaults` guarantees runtime values, and this avoids TypeScript indexing errors when the props are used to key into `as const` lookup objects.
+
+**Example — Button (simple component):**
 
 ```vue
-<!-- @/components/ui/dialog.vue -->
+<!-- @/components/ui/button.vue -->
+<script setup lang="ts">
+import { computed } from 'vue'
+import { Button as V0Button } from '@vuetify/v0/components'
+import { Icon } from '@iconify/vue'
+
+defineOptions({
+  name: 'VuiButton',
+})
+
+interface ButtonProps {
+  variant: 'primary' | 'outline' | 'ghost' | 'secondary' | 'destructive'
+  size: 'sm' | 'default' | 'lg'
+  loading: boolean
+  disabled: boolean
+}
+
+const props = withDefaults(defineProps<ButtonProps>(), {
+  variant: 'primary',
+  size: 'default',
+  loading: false,
+  disabled: false,
+})
+
+const emit = defineEmits<{
+  click: [event: MouseEvent]
+}>()
+
+defineSlots<{
+  default(): any
+  icon(): any
+  loading(): any
+}>()
+
+// Static class maps — hoisted as const for type safety and render performance
+const variantClasses = {
+  primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+  ghost: 'hover:bg-accent hover:text-accent-foreground',
+  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+} as const
+
+const sizeClasses = {
+  sm: 'h-8 px-3 text-xs',
+  default: 'h-10 px-4 py-2',
+  lg: 'h-11 px-8 text-base',
+} as const
+
+const resolvedClass = computed(() => {
+  const base = 'vuefy-button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+  return `${base} ${variantClasses[props.variant as keyof typeof variantClasses]} ${sizeClasses[props.size as keyof typeof sizeClasses]}`
+})
+</script>
+
+<template>
+  <V0Button
+    :class="resolvedClass"
+    :disabled="loading || disabled"
+    :aria-busy="loading"
+    @click="emit('click', $event)"
+  >
+    <template v-if="loading">
+      <slot name="loading" />
+      <Icon
+        v-if="!$slots.loading"
+        icon="lucide:loader-circle"
+        class="h-4 w-4 animate-spin"
+      />
+    </template>
+    <template v-else>
+      <slot v-if="$slots.icon" name="icon" />
+      <slot />
+    </template>
+  </V0Button>
+</template>
+```
+
+**Example — Dialog (compound component):**
+
+For compound components, each sub-component is a **separate `.vue` SFC** in the same directory (e.g., `dialog/dialog.vue`, `dialog/dialog-trigger.vue`, `dialog/dialog-content.vue`). The main component file re-exports sub-components with namespace attachment.
+
+```vue
+<!-- @/components/ui/dialog/dialog.vue -->
+<script setup lang="ts">
+import { Dialog as V0Dialog } from '@vuetify/v0/components'
+import DialogTrigger from './dialog-trigger.vue'
+import DialogContent from './dialog-content.vue'
+import DialogTitle from './dialog-title.vue'
+import DialogDescription from './dialog-description.vue'
+import DialogClose from './dialog-close.vue'
+
+defineOptions({
+  name: 'VuiDialog',
+})
+
+interface DialogProps {
+  open: boolean
+}
+
+const props = withDefaults(defineProps<DialogProps>(), {
+  open: false,
+})
+
+const emit = defineEmits<{
+  'update:open': [value: boolean]
+}>()
+
+const Dialog = V0Dialog.Root
+</script>
+
+<template>
+  <Dialog v-model:open="props.open" @update:open="emit('update:open', $event)">
+    <slot />
+  </Dialog>
+</template>
+```
+
+```vue
+<!-- @/components/ui/dialog/dialog-trigger.vue -->
 <script setup lang="ts">
 import { Dialog as V0Dialog } from '@vuetify/v0/components'
 
-const props = defineProps<DialogProps>()
-const emits = defineEmits<DialogEmits>()
-
-// Sub-components defined as separate defineComponent blocks
-const DialogTrigger = defineComponent({
-  setup(_, { slots }) {
-    return () => h(V0Dialog.Trigger, { asChild: true }, {
-      default: () => slots.trigger?.()
-    })
-  }
+defineOptions({
+  name: 'VuiDialogTrigger',
 })
+</script>
 
-const DialogContent = defineComponent({
-  setup(_, { slots }) {
-    return () => h(V0Dialog.Content, {}, {
-      default: () => [
-        h(DialogTitle, {}, { default: slots.title?. }),
-        h(DialogDescription, {}, { default: slots.description?. }),
-        slots.default?.(),
-        h(DialogClose),
-        h('div', { class: 'vui-dialog-footer' }, slots.footer?.)
-      ]
-    })
-  }
-})
+<template>
+  <V0Dialog.Trigger as-child>
+    <slot />
+  </V0Dialog.Trigger>
+</template>
+```
 
-// ... more sub-components
+Sub-components are re-exported from the main entry with namespace attachment:
 
-// Main component with namespace sub-components attached
-const Dialog = defineComponent({
-  setup(props, { slots }) {
-    return () => h(V0Dialog.Root, { ...forwarded }, {
-      default: () => [
-        h(DialogTrigger, {}, { default: slots.trigger }),
-        h(DialogContent, {}, { default: slots.default })
-      ]
-    })
-  }
-})
+```ts
+// @/components/ui/dialog/index.ts
+import Dialog from './dialog.vue'
+import DialogTrigger from './dialog-trigger.vue'
+import DialogContent from './dialog-content.vue'
+// ...
 
 Dialog.Trigger = DialogTrigger
 Dialog.Content = DialogContent
 Dialog.Title = DialogTitle
 Dialog.Description = DialogDescription
 Dialog.Close = DialogClose
-Dialog.Footer = DialogFooter
 
 export default Dialog
-</script>
+export { DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose }
 ```
+
+**Key conventions:**
+
+- **One `.vue` SFC per component** — simple components are single files, compound components are directories with one file per sub-component
+- **`<script setup>` + `<template>` only** — no `defineComponent` wrappers, no `h()` render functions, no manual `export default`
+- **Props declared required** in the interface — `withDefaults` handles the actual defaults; declaring them required avoids TypeScript indexing errors with `as const` objects
+- **Static lookup objects** (`variantClasses`, `sizeClasses`, etc.) use `as const` for type safety and are accessed with `as keyof typeof` cast
+- **Component naming** via `defineOptions({ name: 'VuiXxx' })` for debugging
+- **`defineSlots`** declares typed slot contracts; slots are consumed in `<template>` via `<slot name="xxx" />` or checked via `$slots.xxx`
+- **All styling via Tailwind utility classes** in the template — no `<style>` blocks per component
 
 **User-facing API:**
 
@@ -194,7 +305,7 @@ export default Dialog
 
 #### Compound Components (Items/Slices)
 
-For compound components that have items, options, or slides, vui exports its own sub-components that wrap v0 equivalents:
+For compound components that have items, options, or slides, vuefy exports its own sub-components that wrap v0 equivalents:
 
 ```vue
 <Tabs v-model="active">
@@ -209,7 +320,7 @@ For compound components that have items, options, or slides, vui exports its own
 </Tabs>
 ```
 
-The user uses `Tabs.Item` and `Tabs.Panel` — these are vui wrappers, not v0 primitives.
+The user uses `Tabs.Item` and `Tabs.Panel` — these are vuefy wrappers, not v0 primitives.
 
 #### Simple Components
 
@@ -236,12 +347,12 @@ Form uses a compound pattern with `FormField`, `FormSubmit`, and `FormMessage` s
 
 #### Context Sharing
 
-Each sub-component directly injects from v0 via `createContext`. The v0 primitives handle state sharing between Root and children; the vui wrapper's role is to apply styling and expose slots.
+For compound components, each sub-component is a separate `.vue` SFC. v0's `createContext` handles state sharing between sub-components — the vuefy wrapper's role is to apply styling and expose slots. Sub-components inject from v0 context directly; the vuefy wrapper does not implement its own state management layer.
 
 ### Registry
 
-- **Full wrapper SFCs in registry**: `@vui/core` contains complete, hand-written wrapper SFCs. The CLI copies them as-is into the user's project. The user owns and modifies them directly.
-- **Registry format**: Component templates are `.vue` files stored in the `@vui/core` npm package alongside a JSON registry with metadata (dependencies, slots, props).
+- **Full wrapper SFCs in registry**: `@vuefy/core` contains complete, hand-written wrapper SFCs. Simple components are single `.vue` files; compound components are directories with one `.vue` file per sub-component plus an `index.ts` for namespace re-exports. The CLI copies them as-is into the user's project. The user owns and modifies them directly.
+- **Registry format**: Component templates are `.vue` files stored in the `@vuefy/core` npm package alongside a JSON registry with metadata (dependencies, slots, props).
 
 ### Styling & Theming
 - **Tailwind CSS v4** with CSS-first configuration (`@import "tailwindcss"`). No `tailwind.config.js`.
@@ -252,20 +363,20 @@ Each sub-component directly injects from v0 via `createContext`. The v0 primitiv
 - **Emil Kowalski animation principles** guide all animation values: ease-out defaults, 200-300ms durations, transform + opacity only.
 - **Tailwind transitions** for micro-interactions, **Vue `<Transition>`** for enter/leave animations.
 - **CSS logical properties** (`ms-`, `me-`, `ps-`, `pe-`) for RTL support.
-- **All Tailwind utility classes** in render functions — no CSS files per component.
+- **All Tailwind utility classes** in templates — no CSS files per component.
 
 ### Overlay System
 - **v0 primitives + Portal** for z-index stacking, focus trapping, and scroll locking. vuetify0's `useStack`, `Portal`, and focus management handle the complexity.
 - **Fully automatic**: The wrapper handles Portal and `as-child` internally. The user has zero awareness of these mechanisms.
 
 ### Accessibility
-- **WAI-ARIA semantics** via vuetify0's compound component implementation. vui's role is to apply Tailwind classes without breaking focus styles or screen reader behavior.
+- **WAI-ARIA semantics** via vuetify0's compound component implementation. vuefy's role is to apply Tailwind classes without breaking focus styles or screen reader behavior.
 - **Hard-coded structure** ensures ARIA relationships stay correct — the wrapper fixes the v0 skeleton so users can't accidentally break semantics.
 
 ### CLI Behavior
-- **`vui init`**: Interactive prompts for framework (Vite/Nuxt), theme variant (dark/light), import path. Generates: global CSS with `@theme`, `components.json`, Tailwind setup, DESIGN.md template.
-- **`vui add <components>`**: Copies component files from registry to project. Confirms with user before writing.
-- **`vui add <component> --dry-run --diff --overwrite`**: Full update support with **smart diff-based merge** that preserves local customizations.
+- **`vuefy init`**: Interactive prompts for framework (Vite/Nuxt), theme variant (dark/light), import path. Generates: global CSS with `@theme`, `components.json`, Tailwind setup, DESIGN.md template.
+- **`vuefy add <components>`**: Copies component files from registry to project. Confirms with user before writing.
+- **`vuefy add <component> --dry-run --diff --overwrite`**: Full update support with **smart diff-based merge** that preserves local customizations.
 - **Auto-dependency resolution**: When adding a component that depends on others (e.g., `select` needs `popover`), the CLI prompts to add them.
 
 ### Configuration
@@ -321,12 +432,12 @@ Each sub-component directly injects from v0 via `createContext`. The v0 primitiv
 - **i18n / internationalization**: No built-in locale support, date/number formatting, or localized component strings in v1. Users handle this themselves.
 - **RTL full testing**: While CSS logical properties are used for RTL support, dedicated RTL testing is out of scope for v1.
 - **Visual regression testing**: No Playwright or Percy-based visual tests in v1. Unit tests cover behavior; visual verification is manual or via Storybook in a future iteration.
-- **Composition API composables**: vui does not export standalone composables (e.g., `useDialog`, `useForm`). Internal v0 composables are encapsulated within components.
+- **Composition API composables**: vuefy does not export standalone composables (e.g., `useDialog`, `useForm`). Internal v0 composables are encapsulated within components.
 - **Server-side rendering (SSR) testing**: While components should work with Nuxt SSR, comprehensive SSR test coverage is out of scope for v1.
 - **DESIGN.md AI parsing**: The natural language DESIGN.md → CSS token parser is deferred. Users modify generated CSS tokens directly after init.
 - **Custom icon library integration beyond Iconify**: No custom icon system. Iconify with lucide default is the only supported approach.
 - **Form validation library integration**: No vee-validate, Zod, or Yup integration. Native HTML5 validation only.
-- **Chart components**: Charts are out of scope. vui does not ship charting components.
+- **Chart components**: Charts are out of scope. vuefy does not ship charting components.
 - **Mobile-specific components**: No swipe gestures, touch-specific interactions, or mobile-only components in v1.
 - **Performance benchmarks**: No formal performance budgets or benchmarking infrastructure in v1.
 
@@ -336,7 +447,7 @@ Each sub-component directly injects from v0 via `createContext`. The v0 primitiv
 vuetify0 provides 36 headless components and 63 composables with WAI-ARIA semantics, covering the full range of UI patterns needed for a design system. It's the direct Vue equivalent of Radix UI (which shadcn is built on). The v0 team maintains it through Vuetify 4 minor releases, ensuring long-term stability.
 
 ### Why Tailwind CSS v4?
-Tailwind v4's CSS-first configuration (`@import "tailwindcss"` + `@theme` blocks) aligns perfectly with the vui philosophy: tokens defined in a single CSS file, utilities applied directly in templates, no config file overhead. This is the same approach shadcn adopted for their v4 migration.
+Tailwind v4's CSS-first configuration (`@import "tailwindcss"` + `@theme` blocks) aligns perfectly with the vuefy philosophy: tokens defined in a single CSS file, utilities applied directly in templates, no config file overhead. This is the same approach shadcn adopted for their v4 migration.
 
 ### Why not ship as an installable package?
 The shadcn model (copy as source) gives developers full ownership and customization freedom. An installable package creates a dependency boundary that makes deep customization harder. For a design system meant to be the foundation of a project, ownership matters.
@@ -344,13 +455,13 @@ The shadcn model (copy as source) gives developers full ownership and customizat
 ### Why wrapper components over direct v0 usage?
 The wrapper pattern provides a significantly better developer experience:
 - **No v0 knowledge required**: Users never import or interact with v0 primitives
-- **Consistent API**: Props, slots, and sub-components follow vui conventions
+- **Consistent API**: Props, slots, and sub-components follow vuefy conventions
 - **Safe structure**: Hard-coded v0 skeleton prevents users from accidentally breaking ARIA semantics
 - **Automatic complexity**: Portal, z-index stacking, focus trapping, `as-child` — all handled internally
 - **Cleaner DX**: `<Dialog><template #trigger><Button/></template></Dialog>` vs `<Dialog.Root><Dialog.Trigger as-child><Button/></Dialog.Trigger><Dialog.Content>...`
 
 ### Scope reality check
-Shipping ~28-30 polished, tested components is a significant undertaking. Each component requires: wrapper SFC implementation with render functions, Tailwind styling, keyboard navigation, ARIA attributes, unit tests, and documentation. The team should be prepared for a substantial initial development effort.
+Shipping ~28-30 polished, tested components is a significant undertaking. Each component requires: wrapper SFC implementation with `<script setup>` + `<template>`, Tailwind styling, keyboard navigation, ARIA attributes, unit tests, and documentation. The team should be prepared for a substantial initial development effort.
 
 ### Name: Vuefy
-The name "Vuefy" follows the pattern of "make it Vue" and is distinct enough from "Vuetify" in context. The CLI is published as `vui` to avoid any naming confusion on npm.
+The name "Vuefy" follows the pattern of "make it Vue" and is distinct enough from "Vuetify" in context. The CLI is published as `vuefy` to avoid any naming confusion on npm.

@@ -17,7 +17,7 @@ Headless UI components built on [vuetify0](https://0.vuetifyjs.com), styled with
 
 - **Source code ownership** — Components are copied into your project. Customize, extend, or delete anything.
 - **Clean slot-based API** — Wraps v0 headless primitives internally. Use props, slots, and sub-components without ever touching v0.
-- **CLI-driven** — `vui init` to set up, `vui add button dialog tabs` to pick what you need.
+- **CLI-driven** — `vuefy init` to set up, `vuefy add button dialog tabs` to pick what you need.
 - **Tailwind CSS v4** — CSS-first configuration with `@theme` blocks. No `tailwind.config.js`.
 - **Dark + Light themes** — Dual default token sets. Modify CSS directly after init.
 - **Full accessibility** — WAI-ARIA compound components via vuetify0. Keyboard navigation out of the box.
@@ -30,10 +30,10 @@ Headless UI components built on [vuetify0](https://0.vuetifyjs.com), styled with
 
 ```bash
 # Initialize Vuefy in your Vite or Nuxt project
-npx vui@latest init
+npx vuefy@latest init
 
 # Add individual components
-npx vui@latest add button dialog tabs select form
+npx vuefy@latest add button dialog tabs select form
 ```
 
 That's it. Components land in `@/components/ui/` and you're ready to build.
@@ -116,8 +116,8 @@ import { LucidePlus } from 'lucide-vue-next'
 
 ```
 Vuefy Monorepo
-├── packages/cli        → vui CLI tool (published as @vui/cli)
-├── packages/core       → Component registry & templates (published as @vui/core)
+├── packages/cli        → vuefy CLI tool (published as @vuefy/cli)
+├── packages/core       → Component registry & templates (published as @vuefy/core)
 └── docs/               → VitePress documentation site
 ```
 
@@ -134,7 +134,7 @@ Vuefy Monorepo
 | **Disclosure** | AlertDialog, Collapsible, Dialog, ExpansionPanel, Popover, Tabs, Treeview |
 | **Semantic** | Avatar, Breadcrumbs, Carousel, Pagination, Snackbar, Splitter |
 
-Infrastructure primitives (Atom, Portal, Presence, etc.) are available directly from `@vuetify/v0` and not shipped as vui components.
+Infrastructure primitives (Atom, Portal, Presence, etc.) are available directly from `@vuetify/v0` and not shipped as vuefy components.
 
 ## Tech Stack
 

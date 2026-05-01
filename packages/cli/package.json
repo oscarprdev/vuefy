@@ -1,9 +1,9 @@
 {
-  "name": "vui",
+  "name": "vuefy",
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "vui": "./dist/cli.js"
+    "vuefy": "./dist/cli.js"
   },
   "main": "./dist/index.js",
   "scripts": {
@@ -11,6 +11,11 @@
     "dev": "tsx src/cli.ts"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "tsx": "^4.0.0"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.4.2",
+    "citty": "^0.2.2"
   }
 }
