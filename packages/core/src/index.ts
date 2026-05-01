@@ -1,1 +1,31 @@
+// Registry
+export { registry, dependencies } from './components/index'
+export type { ComponentName } from './components/index'
+
+// Simple components
 export { default as Button } from './components/button/button.vue'
+export { default as Input } from './components/input/input.vue'
+export { default as Checkbox } from './components/checkbox/checkbox.vue'
+export { default as Switch } from './components/switch/switch.vue'
+export { default as NumberField } from './components/number-field/number-field.vue'
+export { default as Rating } from './components/rating/rating.vue'
+export { default as Collapsible } from './components/collapsible/collapsible.vue'
+export { default as Snackbar } from './components/snackbar/snackbar.vue'
+export { default as Combobox } from './components/combobox/combobox.vue'
+
+// Compound components (default exports with namespace sub-components)
+export { default as Dialog } from './components/dialog/dialog.vue'
+export { default as Popover } from './components/popover/popover.vue'
+export { default as Sheet } from './components/sheet/sheet.vue'
+export { default as AlertDialog } from './components/alert-dialog/alert-dialog.vue'
+export { default as RadioGroup } from './components/radio-group/radio-group.vue'
+export { default as Select } from './components/select/select.vue'
+export { default as Tabs } from './components/tabs/tabs.vue'
+export { default as ExpansionPanel } from './components/expansion-panel/expansion-panel.vue'
+export { default as Treeview } from './components/treeview/treeview.vue'
+export { default as Avatar } from './components/avatar/avatar.vue'
+export { default as Breadcrumbs } from './components/breadcrumbs/breadcrumbs.vue'
+export { default as Carousel } from './components/carousel/carousel.vue'
+export { default as Pagination } from './components/pagination/pagination.vue'
+export { default as Slider } from './components/slider/slider.vue'
+export { default as Splitter } from './components/splitter/splitter.vue'

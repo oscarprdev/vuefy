@@ -7,11 +7,11 @@ import { generateFiles } from './init/generator.js'
 import { writeGeneratedFile } from '../utils/file-utils.js'
 import { detectPackageManager, detectFramework, detectCssPath } from '../utils/fs.js'
 
-function sanitizePath(baseDir: string, userPath: string): string {
+export function sanitizePath(baseDir: string, userPath: string): string {
   const resolved = resolve(baseDir, userPath)
   const relativePath = relative(baseDir, resolved)
 
-  if (relativePath.startsWith('..') + sep === '..' + sep || relativePath.startsWith('..')) {
+  if (relativePath.startsWith('..' + sep) || relativePath.startsWith('..')) {
     throw new Error(`Path "${userPath}" escapes the target directory`)
   }
 
