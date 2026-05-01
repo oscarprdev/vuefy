@@ -2,8 +2,6 @@
 
 # Vuefy
 
-**The shadcn/ui of the Vue ecosystem.**
-
 Headless UI components built on [vuetify0](https://0.vuetifyjs.com), styled with [Tailwind CSS v4](https://tailwindcss.com), and delivered via a CLI that copies source code into your project. You own every line.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -15,19 +13,10 @@ Headless UI components built on [vuetify0](https://0.vuetifyjs.com), styled with
 
 ---
 
-## Why Vuefy?
-
-Vue developers have historically been forced to choose between:
-
-- **Installable UI frameworks** (Vuetify, Element Plus, Quasar) — heavy, hard to customize, you don't own the code
-- **Hand-built component libraries** — months of wasted effort reinventing basic UI
-
-Vuefy bridges that gap. It brings the **"copy as source"** philosophy of shadcn/ui to Vue, powered by vuetify0's headless primitives and Tailwind CSS v4.
-
 ## Key Features
 
 - **Source code ownership** — Components are copied into your project. Customize, extend, or delete anything.
-- **Headless + styled** — vuetify0 provides the logic and WAI-ARIA semantics. Vuefy adds production-ready Tailwind CSS.
+- **Clean slot-based API** — Wraps v0 headless primitives internally. Use props, slots, and sub-components without ever touching v0.
 - **CLI-driven** — `vui init` to set up, `vui add button dialog tabs` to pick what you need.
 - **Tailwind CSS v4** — CSS-first configuration with `@theme` blocks. No `tailwind.config.js`.
 - **Dark + Light themes** — Dual default token sets. Modify CSS directly after init.
@@ -51,34 +40,75 @@ That's it. Components land in `@/components/ui/` and you're ready to build.
 
 ## Example Usage
 
+### Dialog
+
 ```vue
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
-import { Tabs } from '@/components/ui/tabs'
 
 const open = ref(false)
+</script>
+
+<template>
+  <Dialog v-model:open="open">
+    <template #trigger>
+      <Button variant="outline">Open Dialog</Button>
+    </template>
+
+    <template #title>Dialog Title</template>
+    <template #description>
+      A beautiful dialog with full accessibility.
+    </template>
+
+    <template #default>
+      <p>Dialog body content goes here.</p>
+    </template>
+
+    <template #footer>
+      <Button variant="secondary" @click="open = false">Cancel</Button>
+      <Button @click="open = false">Confirm</Button>
+    </template>
+  </Dialog>
+</template>
+```
+
+### Tabs
+
+```vue
+<script setup lang="ts">
+import { Tabs } from '@/components/ui/tabs'
+
 const activeTab = ref('overview')
 </script>
 
 <template>
-  <Dialog.Root v-model:open="open">
-    <Dialog.Trigger as-child>
-      <Button variant="outline">Open Dialog</Button>
-    </Dialog.Trigger>
+  <Tabs v-model="activeTab">
+    <template #tabs>
+      <Tabs.Item value="overview">Overview</Tabs.Item>
+      <Tabs.Item value="details">Details</Tabs.Item>
+    </template>
+    <template #panels>
+      <Tabs.Panel value="overview">Overview content</Tabs.Panel>
+      <Tabs.Panel value="details">Details content</Tabs.Panel>
+    </template>
+  </Tabs>
+</template>
+```
 
-    <Dialog.Content>
-      <Dialog.Title>Dialog Title</Dialog.Title>
-      <Dialog.Description>
-        A beautiful dialog with full accessibility.
-      </Dialog.Description>
+### Button
 
-      <Dialog.Footer>
-        <Button variant="secondary" @click="open = false">Cancel</Button>
-        <Button @click="open = false">Confirm</Button>
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Root>
+```vue
+<script setup lang="ts">
+import { Button } from '@/components/ui/button'
+import { LucidePlus } from 'lucide-vue-next'
+</script>
+
+<template>
+  <Button variant="primary">
+    <template #icon><LucidePlus /></template>
+    Create
+  </Button>
 </template>
 ```
 
