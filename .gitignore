@@ -1,5 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+**/dist/
+**/*.tsbuildinfo
+
+# Vite / VitePress
+**/.vite/
+docs/.vitepress/dist/
+
+# Coverage
+**/coverage/
+**/.nyc_output/
+
+# Environment & secrets
+.env
+.env.*
+*.local
+
+# IDE & editors
+.vscode/
+.vscodeignore
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Opinionated exclusions
 .agents
-docs/.vitepress/dist
 skills-lock.json
-node_modules
 tasks
+.opencode
