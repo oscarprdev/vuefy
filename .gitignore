@@ -1,4 +1,5 @@
 .agents
-docs
+docs/.vitepress/dist
 skills-lock.json
 node_modules
+tasks

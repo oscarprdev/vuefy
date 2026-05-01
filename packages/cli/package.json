@@ -1,0 +1,16 @@
+{
+  "name": "vui",
+  "version": "0.0.0",
+  "type": "module",
+  "bin": {
+    "vui": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
+  }
+}
