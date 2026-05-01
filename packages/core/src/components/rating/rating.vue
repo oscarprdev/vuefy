@@ -36,6 +36,7 @@ function getStarFilled(index: number) {
     <button
       v-for="index in max || 5"
       :key="index"
+      type="button"
       :class="resolvedStarClass"
       :disabled="props.disabled"
       :aria-label="`Rate ${index} out of ${max || 5}`"
@@ -45,7 +46,7 @@ function getStarFilled(index: number) {
     >
       <slot name="icon">
         <Icon
-          :icon="getStarFilled(index) ? 'lucide:star' : 'lucide:star'"
+          :icon="getStarFilled(index) ? 'lucide:star' : 'lucide:star-off'"
           class="h-5 w-5 transition-colors"
           :class="getStarFilled(index) ? 'fill-current text-amber-400' : 'text-muted-foreground'"
         />

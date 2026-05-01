@@ -26,6 +26,7 @@ const resolvedClass = computed(() => {
     v-model:checked="props.checked"
     :disabled="props.disabled"
     :required="props.required"
+    :class="resolvedClass.base"
     @update:checked="emit('update:checked', $event)"
   >
     <Switch.Thumb :class="resolvedClass.thumbClass">

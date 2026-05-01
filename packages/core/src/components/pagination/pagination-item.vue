@@ -19,7 +19,7 @@ const resolvedClass = computed(() => {
 </script>
 
 <template>
-  <button :class="resolvedClass" @click="emit('click')">
+  <button type="button" :class="resolvedClass" @click="emit('click')">
     <slot />
   </button>
 </template>

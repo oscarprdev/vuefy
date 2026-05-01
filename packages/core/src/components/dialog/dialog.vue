@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@vuetify/v0/components'
+import { computed } from 'vue'
 
 const props = defineProps<{
   open?: boolean
@@ -9,13 +10,18 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
+
+const isOpen = computed({
+  get: () => props.open ?? props.defaultOpen ?? false,
+  set: (val: boolean) => emit('update:open', val),
+})
 </script>
 
 <template>
   <Dialog
-    v-model:open="props.open"
+    :open="isOpen"
     :default-open="props.defaultOpen"
-    @update:open="emit('update:open', $event)"
+    @update:open="isOpen = $event"
   >
     <slot />
   </Dialog>

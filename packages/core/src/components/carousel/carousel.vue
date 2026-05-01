@@ -6,6 +6,7 @@ import { Icon } from '@iconify/vue'
 const props = defineProps<{
   orientation?: 'horizontal' | 'vertical'
   snap?: boolean
+  maxHeight?: string
 }>()
 
 const emit = defineEmits<{
@@ -42,9 +43,20 @@ function next() {
   }
 }
 
-const resolvedBtnClass = computed(() => {
+const resolvedPrevClass = computed(() => {
   const base = 'absolute z-10 inline-flex items-center justify-center rounded-full bg-background/80 p-2 shadow-sm backdrop-blur-sm hover:bg-background transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-50 disabled:pointer-events-none'
-  return base
+  const positionClass = props.orientation === 'horizontal'
+    ? 'inset-y-0 start-0'
+    : 'inset-x-0 top-0'
+  return `${base} ${positionClass}`
+})
+
+const resolvedNextClass = computed(() => {
+  const base = 'absolute z-10 inline-flex items-center justify-center rounded-full bg-background/80 p-2 shadow-sm backdrop-blur-sm hover:bg-background transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-50 disabled:pointer-events-none'
+  const positionClass = props.orientation === 'horizontal'
+    ? 'inset-y-0 end-0'
+    : 'inset-x-0 bottom-0'
+  return `${base} ${positionClass}`
 })
 
 const resolvedContentClass = computed(() => {
@@ -65,15 +77,14 @@ const resolvedItemClass = computed(() => {
     <div
       ref="containerRef"
       :class="resolvedContentClass"
-      :style="orientation === 'vertical' ? 'max-height: 400px;' : ''"
+      :style="props.orientation === 'vertical' ? { maxHeight: props.maxHeight || '400px' } : undefined"
     >
       <slot name="slides" />
     </div>
     <Button
-      :class="resolvedBtnClass"
+      :class="resolvedPrevClass"
       variant="ghost"
       size="sm"
-      :style="orientation === 'horizontal' ? 'inset-y-0 start-0' : 'inset-x-0 top-0'"
       @click="prev"
     >
       <slot name="prev">
@@ -81,10 +92,9 @@ const resolvedItemClass = computed(() => {
       </slot>
     </Button>
     <Button
-      :class="resolvedBtnClass"
+      :class="resolvedNextClass"
       variant="ghost"
       size="sm"
-      :style="orientation === 'horizontal' ? 'inset-y-0 end-0' : 'inset-x-0 bottom-0'"
       @click="next"
     >
       <slot name="next">

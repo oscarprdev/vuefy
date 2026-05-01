@@ -55,11 +55,11 @@ const resolvedActionClass = computed(() => {
 </script>
 
 <template>
-  <Snackbar.Root v-if="show">
+  <Snackbar.Root v-show="show">
     <Snackbar.Portal>
       <div :class="resolvedClass" role="status" aria-live="polite">
         <slot />
-        <div class="flex items-center gap-2 ms-auto">
+        <div class="flex items-center gap-2 justify-end">
           <slot name="action">
             <button :class="resolvedActionClass" @click="handleAction">
               {{ props.actionLabel || 'Dismiss' }}

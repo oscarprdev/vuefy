@@ -18,7 +18,7 @@ const resolvedClass = computed(() => {
 </script>
 
 <template>
-  <button :class="resolvedClass" :disabled="props.disabled" @click="emit('click')">
+  <button type="button" :class="resolvedClass" :disabled="props.disabled" @click="emit('click')">
     <Icon icon="lucide:chevron-right" class="h-4 w-4" />
   </button>
 </template>

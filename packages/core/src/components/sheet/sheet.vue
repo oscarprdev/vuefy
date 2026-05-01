@@ -14,6 +14,11 @@ const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
 
+const isOpen = computed({
+  get: () => props.open ?? props.defaultOpen ?? false,
+  set: (val: boolean) => emit('update:open', val),
+})
+
 const sideClasses = computed(() => {
   const map: Record<string, string> = {
     bottom: 'inset-x-0 bottom-0 flex-row rounded-t-xl border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
@@ -27,9 +32,9 @@ const sideClasses = computed(() => {
 
 <template>
   <Dialog
-    v-model:open="props.open"
+    :open="isOpen"
     :default-open="props.defaultOpen"
-    @update:open="emit('update:open', $event)"
+    @update:open="isOpen = $event"
   >
     <slot />
   </Dialog>
