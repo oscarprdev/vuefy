@@ -17,6 +17,7 @@ npx vuefy@latest add alert-dialog
 ```vue
 <script setup lang="ts">
 import { AlertDialog } from '@/components/ui/alert-dialog'
+import { AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 
 const open = ref(false)
@@ -24,25 +25,25 @@ const open = ref(false)
 
 <template>
   <AlertDialog v-model:open="open">
-    <AlertDialog.Trigger>
+    <template #trigger>
       <Button variant="destructive">Delete</Button>
-    </AlertDialog.Trigger>
+    </template>
 
-    <AlertDialog.Content>
-      <AlertDialog.Title>Are you sure?</AlertDialog.Title>
-      <AlertDialog.Description>
+    <template #content>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>
         This action cannot be undone. This will permanently delete your account.
-      </AlertDialog.Description>
+      </AlertDialogDescription>
 
       <div class="flex justify-end gap-2">
-        <AlertDialog.Cancel>
+        <AlertDialogCancel>
           <Button variant="outline">Cancel</Button>
-        </AlertDialog.Cancel>
-        <AlertDialog.Action>
+        </AlertDialogCancel>
+        <AlertDialogAction>
           <Button variant="destructive">Delete</Button>
-        </AlertDialog.Action>
+        </AlertDialogAction>
       </div>
-    </AlertDialog.Content>
+    </template>
   </AlertDialog>
 </template>
 ```
@@ -53,25 +54,25 @@ const open = ref(false)
 
 ```vue
 <AlertDialog v-model:open="open">
-  <AlertDialog.Trigger>
+  <template #trigger>
     <Button variant="destructive">Delete Account</Button>
-  </AlertDialog.Trigger>
+  </template>
 
-  <AlertDialog.Content>
-    <AlertDialog.Title>Confirm Deletion</AlertDialog.Title>
-    <AlertDialog.Description>
+  <template #content>
+    <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
+    <AlertDialogDescription>
       All your data will be permanently removed. This action cannot be undone.
-    </AlertDialog.Description>
+    </AlertDialogDescription>
 
     <div class="flex justify-end gap-2">
-      <AlertDialog.Cancel>
+      <AlertDialogCancel>
         <Button variant="outline">Cancel</Button>
-      </AlertDialog.Cancel>
-      <AlertDialog.Action>
+      </AlertDialogCancel>
+      <AlertDialogAction>
         <Button variant="destructive">Delete</Button>
-      </AlertDialog.Action>
+      </AlertDialogAction>
     </div>
-  </AlertDialog.Content>
+  </template>
 </AlertDialog>
 ```
 
@@ -79,16 +80,16 @@ const open = ref(false)
 
 ```vue
 <AlertDialog v-model:open="open">
-  <AlertDialog.Trigger>
+  <template #trigger>
     <a href="#" @click.prevent="open = true">Delete item</a>
-  </AlertDialog.Trigger>
+  </template>
 
-  <AlertDialog.Content>
-    <AlertDialog.Title>Confirm</AlertDialog.Title>
-    <AlertDialog.Description>Are you sure?</AlertDialog.Description>
-    <AlertDialog.Cancel><Button variant="outline">Cancel</Button></AlertDialog.Cancel>
-    <AlertDialog.Action><Button variant="destructive">Confirm</Button></AlertDialog.Action>
-  </AlertDialog.Content>
+  <template #content>
+    <AlertDialogTitle>Confirm</AlertDialogTitle>
+    <AlertDialogDescription>Are you sure?</AlertDialogDescription>
+    <AlertDialogCancel><Button variant="outline">Cancel</Button></AlertDialogCancel>
+    <AlertDialogAction><Button variant="destructive">Confirm</Button></AlertDialogAction>
+  </template>
 </AlertDialog>
 ```
 
@@ -96,15 +97,15 @@ const open = ref(false)
 
 ```vue
 <AlertDialog v-model:open="open">
-  <AlertDialog.Content>
-    <AlertDialog.Title>Close Alert</AlertDialog.Title>
-    <AlertDialog.Description>
+  <template #content>
+    <AlertDialogTitle>Close Alert</AlertDialogTitle>
+    <AlertDialogDescription>
       You have unsaved changes.
-    </AlertDialog.Description>
-    <AlertDialog.Cancel>
+    </AlertDialogDescription>
+    <AlertDialogCancel>
       <Button @click="open = false">Close</Button>
-    </AlertDialog.Cancel>
-  </AlertDialog.Content>
+    </AlertDialogCancel>
+  </template>
 </AlertDialog>
 ```
 
@@ -117,72 +118,51 @@ const open = ref(false)
 | `open` | `boolean` | — | Controls dialog open state (v-model) |
 | `defaultOpen` | `boolean` | `false` | Initial open state |
 
-### Sub-Components
-
-#### AlertDialog.Trigger
-
-Wraps a child element to trigger the dialog.
-
-```vue
-<AlertDialog.Trigger>
-  <Button>Open</Button>
-</AlertDialog.Trigger>
-```
-
-#### AlertDialog.Content
-
-The dialog overlay content.
-
-```vue
-<AlertDialog.Content>
-  <!-- title, description, actions -->
-</AlertDialog.Content>
-```
-
-#### AlertDialog.Title
-
-Dialog title text.
-
-```vue
-<AlertDialog.Title>Are you sure?</AlertDialog.Title>
-```
-
-#### AlertDialog.Description
-
-Dialog description text.
-
-```vue
-<AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
-```
-
-#### AlertDialog.Action
-
-The primary action button (e.g., "Delete").
-
-```vue
-<AlertDialog.Action>
-  <Button variant="destructive">Delete</Button>
-</AlertDialog.Action>
-```
-
-#### AlertDialog.Cancel
-
-The cancel/close button.
-
-```vue
-<AlertDialog.Cancel>
-  <Button variant="outline">Cancel</Button>
-</AlertDialog.Cancel>
-```
-
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `default` | AlertDialog.Content component |
+| `trigger` | Element that opens the alert dialog |
+| `content` | Dialog overlay content |
+| `action` | Primary action button |
+| `cancel` | Cancel/close button |
 
 ### Emits
 
 | Event | Payload | Description |
 |---|---|---|
 | `update:open` | `boolean` | Emitted when open state changes |
+
+### Standalone Components
+
+#### AlertDialogTitle
+
+```vue
+<AlertDialogTitle>Are you sure?</AlertDialogTitle>
+```
+
+#### AlertDialogDescription
+
+```vue
+<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+```
+
+#### AlertDialogAction
+
+The primary action button (e.g., "Delete").
+
+```vue
+<AlertDialogAction>
+  <Button variant="destructive">Delete</Button>
+</AlertDialogAction>
+```
+
+#### AlertDialogCancel
+
+The cancel/close button.
+
+```vue
+<AlertDialogCancel>
+  <Button variant="outline">Cancel</Button>
+</AlertDialogCancel>
+```

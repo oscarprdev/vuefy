@@ -13,7 +13,7 @@ const resolvedClass = computed(() => {
 </script>
 
 <template>
-  <Dialog.Description :class="resolvedClass" as-child>
+  <Dialog.Description :class="resolvedClass">
     <slot />
   </Dialog.Description>
 </template>

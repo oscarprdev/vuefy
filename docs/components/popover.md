@@ -17,6 +17,7 @@ npx vuefy@latest add popover
 ```vue
 <script setup lang="ts">
 import { Popover } from '@/components/ui/popover'
+import { PopoverClose } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 
 const open = ref(false)
@@ -24,13 +25,13 @@ const open = ref(false)
 
 <template>
   <Popover v-model:open="open">
-    <Popover.Trigger>
+    <template #trigger>
       <Button>Open Popover</Button>
-    </Popover.Trigger>
+    </template>
 
-    <Popover.Content>
+    <template #content>
       <p>Popover content goes here.</p>
-    </Popover.Content>
+    </template>
   </Popover>
 </template>
 ```
@@ -41,11 +42,11 @@ const open = ref(false)
 
 ```vue
 <Popover v-model:open="open">
-  <Popover.Trigger>
+  <template #trigger>
     <Button variant="outline">Settings</Button>
-  </Popover.Trigger>
+  </template>
 
-  <Popover.Content class="w-80">
+  <template #content class="w-80">
     <div class="space-y-4">
       <h4 class="font-medium">Popper Settings</h4>
       <Input placeholder="Enter value" />
@@ -53,7 +54,7 @@ const open = ref(false)
         <Button>Apply</Button>
       </div>
     </div>
-  </Popover.Content>
+  </template>
 </Popover>
 ```
 
@@ -63,8 +64,8 @@ Use the `side` prop to position the popover.
 
 ```vue
 <Popover v-model:open="open" side="top">
-  <Popover.Trigger><Button>Top</Button></Popover.Trigger>
-  <Popover.Content>Positioned above</Popover.Content>
+  <template #trigger><Button>Top</Button></template>
+  <template #content>Positioned above</template>
 </Popover>
 ```
 
@@ -74,8 +75,8 @@ Available sides: `top`, `right`, `bottom`, `left`.
 
 ```vue
 <Popover v-model:open="open" :side-offset="10">
-  <Popover.Trigger><Button>Offset</Button></Popover.Trigger>
-  <Popover.Content>10px offset from trigger</Popover.Content>
+  <template #trigger><Button>Offset</Button></template>
+  <template #content>10px offset from trigger</template>
 </Popover>
 ```
 
@@ -83,16 +84,16 @@ Available sides: `top`, `right`, `bottom`, `left`.
 
 ```vue
 <Popover v-model:open="open">
-  <Popover.Trigger>
+  <template #trigger>
     <Button>Open</Button>
-  </Popover.Trigger>
+  </template>
 
-  <Popover.Content>
+  <template #content>
     <p>Content here.</p>
-    <Popover.Close>
+    <PopoverClose>
       <Button variant="ghost" size="sm" class="ml-auto">Close</Button>
-    </Popover.Close>
-  </Popover.Content>
+    </PopoverClose>
+  </template>
 </Popover>
 ```
 
@@ -100,11 +101,11 @@ Available sides: `top`, `right`, `bottom`, `left`.
 
 ```vue
 <Popover v-model:open="open">
-  <Popover.Trigger>
+  <template #trigger>
     <Button variant="outline">User Info</Button>
-  </Popover.Trigger>
+  </template>
 
-  <Popover.Content class="w-80 space-y-3">
+  <template #content class="w-80 space-y-3">
     <div class="flex items-center gap-3">
       <Avatar src="/user.jpg" alt="User" />
       <div>
@@ -115,7 +116,7 @@ Available sides: `top`, `right`, `bottom`, `left`.
     <div class="text-sm text-muted-foreground">
       Last active 2 minutes ago
     </div>
-  </Popover.Content>
+  </template>
 </Popover>
 ```
 
@@ -130,48 +131,26 @@ Available sides: `top`, `right`, `bottom`, `left`.
 | `side` | `"top"` \| `"right"` \| `"bottom"` \| `"left"` | `"bottom"` | Side to position the popover |
 | `sideOffset` | `number` | `0` | Offset from the trigger |
 
-### Sub-Components
-
-#### Popover.Trigger
-
-Wraps a child element to trigger the popover.
-
-```vue
-<Popover.Trigger><Button>Open</Button></Popover.Trigger>
-```
-
-#### Popover.Content
-
-The floating content panel.
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `side` | `"top"` \| `"right"` \| `"bottom"` \| `"left"` | — | Override side |
-| `sideOffset` | `number` | — | Override offset |
-| `class` | `string` | — | Additional CSS classes |
-
-```vue
-<Popover.Content class="w-80">
-  Content here
-</Popover.Content>
-```
-
-#### Popover.Close
-
-Closes the popover when clicked.
-
-```vue
-<Popover.Close><Button>Close</Button></Popover.Close>
-```
-
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `default` | Popover.Content component |
+| `trigger` | Element that opens the popover |
+| `content` | The floating content panel |
+| `close` | Optional close button |
 
 ### Emits
 
 | Event | Payload | Description |
 |---|---|---|
 | `update:open` | `boolean` | Emitted when open state changes |
+
+### Standalone Components
+
+#### PopoverClose
+
+Closes the popover when clicked.
+
+```vue
+<PopoverClose><Button>Close</Button></PopoverClose>
+```

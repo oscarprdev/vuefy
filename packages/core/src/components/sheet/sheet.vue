@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog } from '@vuetify/v0/components'
-import { computed } from 'vue'
+import { computed, type VNode } from 'vue'
 
 const props = withDefaults(defineProps<{
   open?: boolean
@@ -28,6 +28,17 @@ const sideClasses = computed(() => {
   }
   return map[props.side] || map.right
 })
+
+const contentClass = computed(() => {
+  const base = 'fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500'
+  return `${base} ${sideClasses.value}`
+})
+
+const slots = defineSlots<{
+  trigger: () => VNode
+  content: () => VNode
+  close?: () => VNode
+}>()
 </script>
 
 <template>
@@ -36,6 +47,12 @@ const sideClasses = computed(() => {
     :default-open="props.defaultOpen"
     @update:open="isOpen = $event"
   >
-    <slot />
+    <slot name="trigger" />
+
+    <Dialog.Content :class="contentClass" as-child>
+      <slot name="content" />
+
+      <slot name="close" />
+    </Dialog.Content>
   </Dialog>
 </template>

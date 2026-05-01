@@ -17,6 +17,7 @@ npx vuefy@latest add sheet
 ```vue
 <script setup lang="ts">
 import { Sheet } from '@/components/ui/sheet'
+import { SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 
 const open = ref(false)
@@ -24,16 +25,16 @@ const open = ref(false)
 
 <template>
   <Sheet v-model:open="open">
-    <Sheet.Trigger>
+    <template #trigger>
       <Button>Open Sheet</Button>
-    </Sheet.Trigger>
+    </template>
 
-    <Sheet.Content>
-      <Sheet.Title>Sheet Title</Sheet.Title>
-      <Sheet.Description>
+    <template #content>
+      <SheetTitle>Sheet Title</SheetTitle>
+      <SheetDescription>
         Sheet description goes here.
-      </Sheet.Description>
-    </Sheet.Content>
+      </SheetDescription>
+    </template>
   </Sheet>
 </template>
 ```
@@ -44,12 +45,12 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open">
-  <Sheet.Trigger><Button>Right</Button></Sheet.Trigger>
-  <Sheet.Content>
-    <Sheet.Title>Right Sheet</Sheet.Title>
-    <Sheet.Description>Slides in from the right.</Sheet.Description>
-    <Sheet.Close><Button variant="outline">Close</Button></Sheet.Close>
-  </Sheet.Content>
+  <template #trigger><Button>Right</Button></template>
+  <template #content>
+    <SheetTitle>Right Sheet</SheetTitle>
+    <SheetDescription>Slides in from the right.</SheetDescription>
+    <SheetClose><Button variant="outline">Close</Button></SheetClose>
+  </template>
 </Sheet>
 ```
 
@@ -57,11 +58,11 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open" side="left">
-  <Sheet.Trigger><Button>Left</Button></Sheet.Trigger>
-  <Sheet.Content>
-    <Sheet.Title>Left Sheet</Sheet.Title>
-    <Sheet.Description>Slides in from the left.</Sheet.Description>
-  </Sheet.Content>
+  <template #trigger><Button>Left</Button></template>
+  <template #content>
+    <SheetTitle>Left Sheet</SheetTitle>
+    <SheetDescription>Slides in from the left.</SheetDescription>
+  </template>
 </Sheet>
 ```
 
@@ -69,11 +70,11 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open" side="top">
-  <Sheet.Trigger><Button>Top</Button></Sheet.Trigger>
-  <Sheet.Content>
-    <Sheet.Title>Top Sheet</Sheet.Title>
-    <Sheet.Description>Slides in from the top.</Sheet.Description>
-  </Sheet.Content>
+  <template #trigger><Button>Top</Button></template>
+  <template #content>
+    <SheetTitle>Top Sheet</SheetTitle>
+    <SheetDescription>Slides in from the top.</SheetDescription>
+  </template>
 </Sheet>
 ```
 
@@ -81,11 +82,11 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open" side="bottom">
-  <Sheet.Trigger><Button>Bottom</Button></Sheet.Trigger>
-  <Sheet.Content>
-    <Sheet.Title>Bottom Sheet</Sheet.Title>
-    <Sheet.Description>Slides in from the bottom.</Sheet.Description>
-  </Sheet.Content>
+  <template #trigger><Button>Bottom</Button></template>
+  <template #content>
+    <SheetTitle>Bottom Sheet</SheetTitle>
+    <SheetDescription>Slides in from the bottom.</SheetDescription>
+  </template>
 </Sheet>
 ```
 
@@ -93,15 +94,15 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open">
-  <Sheet.Trigger>
+  <template #trigger>
     <Button>Edit Profile</Button>
-  </Sheet.Trigger>
+  </template>
 
-  <Sheet.Content>
-    <Sheet.Title>Edit Profile</Sheet.Title>
-    <Sheet.Description>
+  <template #content>
+    <SheetTitle>Edit Profile</SheetTitle>
+    <SheetDescription>
       Make changes to your profile here.
-    </Sheet.Description>
+    </SheetDescription>
 
     <div class="space-y-4 py-4">
       <Input v-model="name" placeholder="Name">
@@ -113,12 +114,12 @@ const open = ref(false)
     </div>
 
     <div class="flex justify-end gap-2">
-      <Sheet.Close>
+      <SheetClose>
         <Button variant="outline">Cancel</Button>
-      </Sheet.Close>
+      </SheetClose>
       <Button>Save</Button>
     </div>
-  </Sheet.Content>
+  </template>
 </Sheet>
 ```
 
@@ -126,18 +127,18 @@ const open = ref(false)
 
 ```vue
 <Sheet v-model:open="open">
-  <Sheet.Content>
-    <Sheet.Title>Long Content</Sheet.Title>
-    <Sheet.Description>Scrollable content area.</Sheet.Description>
+  <template #content>
+    <SheetTitle>Long Content</SheetTitle>
+    <SheetDescription>Scrollable content area.</SheetDescription>
 
     <div class="max-h-[80vh] overflow-y-auto py-4">
       <!-- long content -->
     </div>
 
     <div class="flex justify-end">
-      <Sheet.Close><Button>Close</Button></Sheet.Close>
+      <SheetClose><Button>Close</Button></SheetClose>
     </div>
-  </Sheet.Content>
+  </template>
 </Sheet>
 ```
 
@@ -151,64 +152,42 @@ const open = ref(false)
 | `defaultOpen` | `boolean` | `false` | Initial open state |
 | `side` | `"top"` \| `"right"` \| `"bottom"` \| `"left"` | `"right"` | Side to slide from |
 
-### Sub-Components
-
-#### Sheet.Trigger
-
-Wraps a child element to trigger the sheet.
-
-```vue
-<Sheet.Trigger><Button>Open</Button></Sheet.Trigger>
-```
-
-#### Sheet.Content
-
-The sheet overlay panel.
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `side` | `"top"` \| `"right"` \| `"bottom"` \| `"left"` | — | Override side |
-| `class` | `string` | — | Additional CSS classes |
-
-```vue
-<Sheet.Content>
-  <Sheet.Title>...</Sheet.Title>
-  <Sheet.Description>...</Sheet.Description>
-</Sheet.Content>
-```
-
-#### Sheet.Title
-
-Sheet title text.
-
-```vue
-<Sheet.Title>Edit Profile</Sheet.Title>
-```
-
-#### Sheet.Description
-
-Sheet description/helper text.
-
-```vue
-<Sheet.Description>Make changes here.</Sheet.Description>
-```
-
-#### Sheet.Close
-
-Closes the sheet when clicked.
-
-```vue
-<Sheet.Close><Button variant="outline">Close</Button></Sheet.Close>
-```
-
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `default` | Sheet.Content component |
+| `trigger` | Element that opens the sheet |
+| `content` | The sheet overlay panel |
+| `close` | Optional close button |
 
 ### Emits
 
 | Event | Payload | Description |
 |---|---|---|
 | `update:open` | `boolean` | Emitted when open state changes |
+
+### Standalone Components
+
+#### SheetTitle
+
+Sheet title text.
+
+```vue
+<SheetTitle>Edit Profile</SheetTitle>
+```
+
+#### SheetDescription
+
+Sheet description/helper text.
+
+```vue
+<SheetDescription>Make changes here.</SheetDescription>
+```
+
+#### SheetClose
+
+Closes the sheet when clicked.
+
+```vue
+<SheetClose><Button variant="outline">Close</Button></SheetClose>
+```

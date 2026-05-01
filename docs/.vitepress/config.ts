@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Vuefy',
   description: 'Headless UI components for Vue 3 — styled with Tailwind CSS v4, delivered via CLI.',
-  base: '/docs/',
+  base: '/',
   lang: 'en-US',
 
   themeConfig: {
@@ -12,8 +12,8 @@ export default defineConfig({
     nav: nav(),
 
     sidebar: {
-      '/docs/getting-started': sidebarGettingStarted(),
-      '/docs/components': sidebarComponents(),
+      '/getting-started/': sidebarGettingStarted(),
+      '/components/': sidebarComponents(),
     },
 
     socialLinks: [
@@ -33,8 +33,8 @@ export default defineConfig({
 
 function nav() {
   return [
-    { text: 'Docs', link: '/docs/getting-started/introduction' },
-    { text: 'Components', link: '/docs/components/button' },
+    { text: 'Docs', link: '/getting-started/introduction' },
+    { text: 'Components', link: '/components/button' },
     { text: 'GitHub', link: 'https://github.com/oscar/vuefy' },
   ]
 }
@@ -44,11 +44,11 @@ function sidebarGettingStarted() {
     {
       text: 'Getting Started',
       items: [
-        { text: 'Introduction', link: '/docs/getting-started/introduction' },
-        { text: 'Installation', link: '/docs/getting-started/installation' },
-        { text: 'Theming', link: '/docs/getting-started/theming' },
-        { text: 'CLI', link: '/docs/getting-started/cli' },
-        { text: 'Monorepo', link: '/docs/getting-started/monorepo' },
+        { text: 'Introduction', link: '/getting-started/introduction' },
+        { text: 'Installation', link: '/getting-started/installation' },
+        { text: 'Theming', link: '/getting-started/theming' },
+        { text: 'CLI', link: '/getting-started/cli' },
+        { text: 'Monorepo', link: '/getting-started/monorepo' },
       ],
     },
   ]
@@ -59,44 +59,44 @@ function sidebarComponents() {
     {
       text: 'Actions',
       items: [
-        { text: 'Button', link: '/docs/components/button' },
+        { text: 'Button', link: '/components/button' },
       ],
     },
     {
       text: 'Forms',
       items: [
-        { text: 'Checkbox', link: '/docs/components/checkbox' },
-        { text: 'Combobox', link: '/docs/components/combobox' },
-        { text: 'Input', link: '/docs/components/input' },
-        { text: 'NumberField', link: '/docs/components/number-field' },
-        { text: 'Radio Group', link: '/docs/components/radio-group' },
-        { text: 'Rating', link: '/docs/components/rating' },
-        { text: 'Select', link: '/docs/components/select' },
-        { text: 'Slider', link: '/docs/components/slider' },
-        { text: 'Switch', link: '/docs/components/switch' },
+        { text: 'Checkbox', link: '/components/checkbox' },
+        { text: 'Combobox', link: '/components/combobox' },
+        { text: 'Input', link: '/components/input' },
+        { text: 'NumberField', link: '/components/number-field' },
+        { text: 'Radio Group', link: '/components/radio-group' },
+        { text: 'Rating', link: '/components/rating' },
+        { text: 'Select', link: '/components/select' },
+        { text: 'Slider', link: '/components/slider' },
+        { text: 'Switch', link: '/components/switch' },
       ],
     },
     {
       text: 'Disclosure',
       items: [
-        { text: 'Alert Dialog', link: '/docs/components/alert-dialog' },
-        { text: 'Collapsible', link: '/docs/components/collapsible' },
-        { text: 'Dialog', link: '/docs/components/dialog' },
-        { text: 'Expansion Panel', link: '/docs/components/expansion-panel' },
-        { text: 'Popover', link: '/docs/components/popover' },
-        { text: 'Tabs', link: '/docs/components/tabs' },
-        { text: 'Treeview', link: '/docs/components/treeview' },
+        { text: 'Alert Dialog', link: '/components/alert-dialog' },
+        { text: 'Collapsible', link: '/components/collapsible' },
+        { text: 'Dialog', link: '/components/dialog' },
+        { text: 'Expansion Panel', link: '/components/expansion-panel' },
+        { text: 'Popover', link: '/components/popover' },
+        { text: 'Tabs', link: '/components/tabs' },
+        { text: 'Treeview', link: '/components/treeview' },
       ],
     },
     {
       text: 'Semantic',
       items: [
-        { text: 'Avatar', link: '/docs/components/avatar' },
-        { text: 'Breadcrumbs', link: '/docs/components/breadcrumbs' },
-        { text: 'Carousel', link: '/docs/components/carousel' },
-        { text: 'Pagination', link: '/docs/components/pagination' },
-        { text: 'Snackbar', link: '/docs/components/snackbar' },
-        { text: 'Splitter', link: '/docs/components/splitter' },
+        { text: 'Avatar', link: '/components/avatar' },
+        { text: 'Breadcrumbs', link: '/components/breadcrumbs' },
+        { text: 'Carousel', link: '/components/carousel' },
+        { text: 'Pagination', link: '/components/pagination' },
+        { text: 'Snackbar', link: '/components/snackbar' },
+        { text: 'Splitter', link: '/components/splitter' },
       ],
     },
   ]

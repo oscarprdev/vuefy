@@ -13,7 +13,7 @@ export { default as Collapsible } from './components/collapsible/collapsible.vue
 export { default as Snackbar } from './components/snackbar/snackbar.vue'
 export { default as Combobox } from './components/combobox/combobox.vue'
 
-// Compound components (default exports with namespace sub-components)
+// Compound components (slot-based roots)
 export { default as Dialog } from './components/dialog/dialog.vue'
 export { default as Popover } from './components/popover/popover.vue'
 export { default as Sheet } from './components/sheet/sheet.vue'
@@ -29,3 +29,32 @@ export { default as Carousel } from './components/carousel/carousel.vue'
 export { default as Pagination } from './components/pagination/pagination.vue'
 export { default as Slider } from './components/slider/slider.vue'
 export { default as Splitter } from './components/splitter/splitter.vue'
+
+// Dialog standalone primitives
+export { default as DialogTitle } from './components/dialog/dialog-title.vue'
+export { default as DialogDescription } from './components/dialog/dialog-description.vue'
+export { default as DialogClose } from './components/dialog/dialog-close.vue'
+
+// Popover standalone primitives
+export { default as PopoverClose } from './components/popover/popover-close.vue'
+
+// Sheet standalone primitives
+export { default as SheetTitle } from './components/sheet/sheet-title.vue'
+export { default as SheetDescription } from './components/sheet/sheet-description.vue'
+export { default as SheetClose } from './components/sheet/sheet-close.vue'
+
+// AlertDialog standalone primitives
+export { default as AlertDialogTitle } from './components/alert-dialog/alert-dialog-title.vue'
+export { default as AlertDialogDescription } from './components/alert-dialog/alert-dialog-description.vue'
+export { default as AlertDialogAction } from './components/alert-dialog/alert-dialog-action.vue'
+export { default as AlertDialogCancel } from './components/alert-dialog/alert-dialog-cancel.vue'
+
+// Select standalone components
+export { default as SelectValue } from './components/select/select-value.vue'
+export { default as SelectItem } from './components/select/select-item.vue'
+
+// ExpansionPanel standalone components
+export { default as ExpansionPanelItem } from './components/expansion-panel/expansion-panel-item.vue'
+
+// Tabs standalone components
+export { default as TabsItem } from './components/tabs/tabs-item.vue'

@@ -12,10 +12,10 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /docs/getting-started/introduction
+      link: /getting-started/introduction
     - theme: alt
       text: Components
-      link: /docs/components/button
+      link: /components/button
     - theme: alt
       text: View on GitHub
       link: https://github.com/oscar/vuefy

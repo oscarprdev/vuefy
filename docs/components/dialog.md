@@ -17,6 +17,7 @@ npx vuefy@latest add dialog
 ```vue
 <script setup lang="ts">
 import { Dialog } from '@/components/ui/dialog'
+import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 
 const open = ref(false)
@@ -24,16 +25,16 @@ const open = ref(false)
 
 <template>
   <Dialog v-model:open="open">
-    <Dialog.Trigger>
+    <template #trigger>
       <Button>Open Dialog</Button>
-    </Dialog.Trigger>
+    </template>
 
-    <Dialog.Content>
-      <Dialog.Title>Dialog Title</Dialog.Title>
-      <Dialog.Description>
+    <template #content>
+      <DialogTitle>Dialog Title</DialogTitle>
+      <DialogDescription>
         A beautiful dialog with full accessibility.
-      </Dialog.Description>
-    </Dialog.Content>
+      </DialogDescription>
+    </template>
   </Dialog>
 </template>
 ```
@@ -44,27 +45,27 @@ const open = ref(false)
 
 ```vue
 <Dialog v-model:open="open">
-  <Dialog.Trigger>
+  <template #trigger>
     <Button>Open</Button>
-  </Dialog.Trigger>
+  </template>
 
-  <Dialog.Content>
-    <Dialog.Title>Edit Profile</Dialog.Title>
-    <Dialog.Description>
+  <template #content>
+    <DialogTitle>Edit Profile</DialogTitle>
+    <DialogDescription>
       Make changes to your profile here.
-    </Dialog.Description>
+    </DialogDescription>
 
     <div class="space-y-4 py-4">
       <!-- form fields -->
     </div>
 
     <div class="flex justify-end gap-2">
-      <Dialog.Close>
+      <DialogClose>
         <Button variant="outline">Cancel</Button>
-      </Dialog.Close>
+      </DialogClose>
       <Button>Save</Button>
     </div>
-  </Dialog.Content>
+  </template>
 </Dialog>
 ```
 
@@ -73,6 +74,7 @@ const open = ref(false)
 ```vue
 <script setup lang="ts">
 import { Dialog } from '@/components/ui/dialog'
+import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -82,15 +84,15 @@ const name = ref('')
 
 <template>
   <Dialog v-model:open="open">
-    <Dialog.Trigger>
+    <template #trigger>
       <Button>Add User</Button>
-    </Dialog.Trigger>
+    </template>
 
-    <Dialog.Content>
-      <Dialog.Title>Add New User</Dialog.Title>
-      <Dialog.Description>
+    <template #content>
+      <DialogTitle>Add New User</DialogTitle>
+      <DialogDescription>
         Enter the details for the new user.
-      </Dialog.Description>
+      </DialogDescription>
 
       <div class="space-y-4 py-4">
         <Input v-model="name" placeholder="Username">
@@ -99,12 +101,12 @@ const name = ref('')
       </div>
 
       <div class="flex justify-end gap-2">
-        <Dialog.Close>
+        <DialogClose>
           <Button variant="outline">Cancel</Button>
-        </Dialog.Close>
+        </DialogClose>
         <Button @click="open = false">Create</Button>
       </div>
-    </Dialog.Content>
+    </template>
   </Dialog>
 </template>
 ```
@@ -113,15 +115,15 @@ const name = ref('')
 
 ```vue
 <Dialog v-model:open="open">
-  <Dialog.Trigger>
+  <template #trigger>
     <a href="#" @click.prevent="open = true">Open dialog</a>
-  </Dialog.Trigger>
+  </template>
 
-  <Dialog.Content>
-    <Dialog.Title>Custom Trigger</Dialog.Title>
-    <Dialog.Description>Triggered by a link.</Dialog.Description>
-    <Dialog.Close><Button variant="outline">Close</Button></Dialog.Close>
-  </Dialog.Content>
+  <template #content>
+    <DialogTitle>Custom Trigger</DialogTitle>
+    <DialogDescription>Triggered by a link.</DialogDescription>
+    <DialogClose><Button variant="outline">Close</Button></DialogClose>
+  </template>
 </Dialog>
 ```
 
@@ -129,13 +131,13 @@ const name = ref('')
 
 ```vue
 <Dialog v-model:open="open">
-  <Dialog.Content>
-    <Dialog.Title>Dialog</Dialog.Title>
-    <Dialog.Description>Content goes here.</Dialog.Description>
-    <Dialog.Close>
+  <template #content>
+    <DialogTitle>Dialog</DialogTitle>
+    <DialogDescription>Content goes here.</DialogDescription>
+    <DialogClose>
       <Button variant="ghost" size="sm">✕</Button>
-    </Dialog.Close>
-  </Dialog.Content>
+    </DialogClose>
+  </template>
 </Dialog>
 ```
 
@@ -145,11 +147,11 @@ Use the following composition to build a Dialog:
 
 ```
 Dialog
-├── DialogTrigger
-└── DialogContent
-    ├── DialogTitle
-    └── DialogDescription
-    └── DialogClose
+├── #trigger slot
+└── #content slot
+    ├── DialogTitle (standalone)
+    ├── DialogDescription (standalone)
+    └── DialogClose (standalone)
 ```
 
 ## API Reference
@@ -161,59 +163,42 @@ Dialog
 | `open` | `boolean` | — | Controls dialog open state (v-model) |
 | `defaultOpen` | `boolean` | `false` | Initial open state |
 
-### Sub-Components
-
-#### Dialog.Trigger
-
-Wraps a child element to trigger the dialog.
-
-```vue
-<Dialog.Trigger><Button>Open</Button></Dialog.Trigger>
-```
-
-#### Dialog.Content
-
-The dialog overlay content panel.
-
-```vue
-<Dialog.Content>
-  <Dialog.Title>...</Dialog.Title>
-  <Dialog.Description>...</Dialog.Description>
-</Dialog.Content>
-```
-
-#### Dialog.Title
-
-Dialog title text.
-
-```vue
-<Dialog.Title>My Dialog</Dialog.Title>
-```
-
-#### Dialog.Description
-
-Dialog description/helper text.
-
-```vue
-<Dialog.Description>More info here.</Dialog.Description>
-```
-
-#### Dialog.Close
-
-Closes the dialog when clicked.
-
-```vue
-<Dialog.Close><Button>Close</Button></Dialog.Close>
-```
-
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `default` | Dialog.Content component |
+| `trigger` | Element that opens the dialog |
+| `content` | Dialog overlay content panel |
+| `close` | Optional close button |
 
 ### Emits
 
 | Event | Payload | Description |
 |---|---|---|
 | `update:open` | `boolean` | Emitted when open state changes |
+
+### Standalone Components
+
+#### DialogTitle
+
+Dialog title with Radix `aria-labelledby` linking.
+
+```vue
+<DialogTitle>My Dialog</DialogTitle>
+```
+
+#### DialogDescription
+
+Dialog description/helper text with Radix `aria-describedby` linking.
+
+```vue
+<DialogDescription>More info here.</DialogDescription>
+```
+
+#### DialogClose
+
+Closes the dialog when clicked.
+
+```vue
+<DialogClose><Button>Close</Button></DialogClose>
+```

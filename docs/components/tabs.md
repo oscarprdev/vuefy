@@ -17,22 +17,28 @@ npx vuefy@latest add tabs
 ```vue
 <script setup lang="ts">
 import { Tabs } from '@/components/ui/tabs'
+import { TabsItem } from '@/components/ui/tabs'
 
 const activeTab = ref('overview')
 </script>
 
 <template>
   <Tabs v-model="activeTab">
-    <template #tabs>
-      <Tabs.Item value="overview">Overview</Tabs.Item>
-      <Tabs.Item value="details">Details</Tabs.Item>
-      <Tabs.Item value="settings">Settings</Tabs.Item>
+    <template #list>
+      <TabsItem value="overview">Overview</TabsItem>
+      <TabsItem value="details">Details</TabsItem>
+      <TabsItem value="settings">Settings</TabsItem>
     </template>
 
     <template #panels>
-      <Tabs.Panel value="overview">Overview content</Tabs.Panel>
-      <Tabs.Panel value="details">Details content</Tabs.Panel>
-      <Tabs.Panel value="settings">Settings content</Tabs.Panel>
+      <TabsItem value="overview">
+        Overview content
+        <template #panel>Overview content</TabsItem>
+      </TabsItem>
+      <TabsItem value="details">
+        Details content
+        <template #panel>Details content</TabsItem>
+      </TabsItem>
     </template>
   </Tabs>
 </template>
@@ -44,13 +50,13 @@ const activeTab = ref('overview')
 
 ```vue
 <Tabs default-value="details">
-  <template #tabs>
-    <Tabs.Item value="overview">Overview</Tabs.Item>
-    <Tabs.Item value="details">Details</Tabs.Item>
+  <template #list>
+    <TabsItem value="overview">Overview</TabsItem>
+    <TabsItem value="details">Details</TabsItem>
   </template>
   <template #panels>
-    <Tabs.Panel value="overview">Overview</Tabs.Panel>
-    <Tabs.Panel value="details">Details</Tabs.Panel>
+    <TabsItem value="overview">Overview</TabsItem>
+    <TabsItem value="details">Details</TabsItem>
   </template>
 </Tabs>
 ```
@@ -60,15 +66,15 @@ const activeTab = ref('overview')
 ```vue
 <div class="flex gap-8">
   <Tabs default-value="a" class="w-auto">
-    <template #tabs>
-      <Tabs.Item value="a">Tab A</Tabs.Item>
-      <Tabs.Item value="b">Tab B</Tabs.Item>
-      <Tabs.Item value="c">Tab C</Tabs.Item>
+    <template #list>
+      <TabsItem value="a">Tab A</TabsItem>
+      <TabsItem value="b">Tab B</TabsItem>
+      <TabsItem value="c">Tab C</TabsItem>
     </template>
     <template #panels>
-      <Tabs.Panel value="a">Content A</Tabs.Panel>
-      <Tabs.Panel value="b">Content B</Tabs.Panel>
-      <Tabs.Panel value="c">Content C</Tabs.Panel>
+      <TabsItem value="a">Content A</TabsItem>
+      <TabsItem value="b">Content B</TabsItem>
+      <TabsItem value="c">Content C</TabsItem>
     </template>
   </Tabs>
   <div class="flex-1">
@@ -81,21 +87,21 @@ const activeTab = ref('overview')
 
 ```vue
 <Tabs v-model="activeTab">
-  <template #tabs>
-    <Tabs.Item value="profile">Profile</Tabs.Item>
-    <Tabs.Item value="account">Account</Tabs.Item>
+  <template #list>
+    <TabsItem value="profile">Profile</TabsItem>
+    <TabsItem value="account">Account</TabsItem>
   </template>
   <template #panels>
-    <Tabs.Panel value="profile">
+    <TabsItem value="profile">
       <Input v-model="name" placeholder="Name">
         <template #label>Name</template>
       </Input>
-    </Tabs.Panel>
-    <Tabs.Panel value="account">
+    </TabsItem>
+    <TabsItem value="account">
       <Input v-model="email" placeholder="Email">
         <template #label>Email</template>
       </Input>
-    </Tabs.Panel>
+    </TabsItem>
   </template>
 </Tabs>
 ```
@@ -122,8 +128,8 @@ function switchTo(tab: string) {
     </div>
     <Tabs v-model="activeTab">
       <template #panels>
-        <Tabs.Panel value="overview">Overview</Tabs.Panel>
-        <Tabs.Panel value="details">Details</Tabs.Panel>
+        <TabsItem value="overview">Overview</TabsItem>
+        <TabsItem value="details">Details</TabsItem>
       </template>
     </Tabs>
   </div>
@@ -136,44 +142,40 @@ function switchTo(tab: string) {
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `modelValue` | `string` | `""` | Active tab value (v-model) |
-| `defaultValue` | `string` | `""` | Initial active tab |
-
-### Sub-Components
-
-#### Tabs.Item
-
-A tab button.
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | — | Unique identifier for this tab |
-
-```vue
-<Tabs.Item value="overview">Overview</Tabs.Item>
-```
-
-#### Tabs.Panel
-
-A tab panel content area.
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | — | Must match a Tabs.Item value |
-
-```vue
-<Tabs.Panel value="overview">Content</Tabs.Panel>
-```
+| `modelValue` | `string \| number` | — | Active tab value (v-model) |
+| `defaultValue` | `string \| number` | — | Initial active tab |
+| `orientation` | `"horizontal"` \| `"vertical"` | `"horizontal"` | Tab orientation |
 
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `tabs` | Tabs.Item components |
-| `panels` | Tabs.Panel components |
+| `list` | Tab buttons (`TabsItem` components) |
+| `panels` | Tab panel content (`TabsItem` components with `#panel` slot) |
 
 ### Emits
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `string` | Emitted when active tab changes |
+| `update:modelValue` | `string \| number` | Emitted when active tab changes |
+
+### TabsItem
+
+A tab button with an associated panel.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string \| number` | — | Unique identifier for this tab |
+| `disabled` | `boolean` | `false` | Disables this tab |
+| `class` | `string` | — | Additional CSS classes |
+
+```vue
+<TabsItem value="overview">Overview</TabsItem>
+```
+
+#### TabsItem Slots
+
+| Slot | Description |
+|---|---|
+| `default` | Tab label/button text |
+| `panel` | Panel content for this tab |

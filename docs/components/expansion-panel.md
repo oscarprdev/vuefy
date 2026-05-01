@@ -17,25 +17,26 @@ npx vuefy@latest add expansion-panel
 ```vue
 <script setup lang="ts">
 import { ExpansionPanel } from '@/components/ui/expansion-panel'
+import { ExpansionPanelItem } from '@/components/ui/expansion-panel'
 
 const openPanels = ref(['panel-1'])
 </script>
 
 <template>
   <ExpansionPanel v-model="openPanels">
-    <ExpansionPanel.Item value="panel-1">
-      <ExpansionPanel.Header>Panel 1</ExpansionPanel.Header>
-      <ExpansionPanel.Content>
+    <ExpansionPanelItem value="panel-1">
+      <template #header>Panel 1</template>
+      <template #content>
         <p>Content for panel 1.</p>
-      </ExpansionPanel.Content>
-    </ExpansionPanel.Item>
+      </template>
+    </ExpansionPanelItem>
 
-    <ExpansionPanel.Item value="panel-2">
-      <ExpansionPanel.Header>Panel 2</ExpansionPanel.Header>
-      <ExpansionPanel.Content>
+    <ExpansionPanelItem value="panel-2">
+      <template #header>Panel 2</template>
+      <template #content>
         <p>Content for panel 2.</p>
-      </ExpansionPanel.Content>
-    </ExpansionPanel.Item>
+      </template>
+    </ExpansionPanelItem>
   </ExpansionPanel>
 </template>
 ```
@@ -48,12 +49,12 @@ Use `collapsible` prop to allow closing all panels.
 
 ```vue
 <ExpansionPanel v-model="openPanels" collapsible>
-  <ExpansionPanel.Item value="a">
-    <ExpansionPanel.Header>Section A</ExpansionPanel.Header>
-    <ExpansionPanel.Content>
+  <ExpansionPanelItem value="a">
+    <template #header>Section A</template>
+    <template #content>
       <p>Content A</p>
-    </ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+    </template>
+  </ExpansionPanelItem>
 </ExpansionPanel>
 ```
 
@@ -63,20 +64,20 @@ By default, multiple panels can be open simultaneously.
 
 ```vue
 <ExpansionPanel v-model="openPanels">
-  <ExpansionPanel.Item value="a">
-    <ExpansionPanel.Header>Section A</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content A</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="a">
+    <template #header>Section A</template>
+    <template #content>Content A</template>
+  </ExpansionPanelItem>
 
-  <ExpansionPanel.Item value="b">
-    <ExpansionPanel.Header>Section B</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content B</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="b">
+    <template #header>Section B</template>
+    <template #content>Content B</template>
+  </ExpansionPanelItem>
 
-  <ExpansionPanel.Item value="c">
-    <ExpansionPanel.Header>Section C</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content C</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="c">
+    <template #header>Section C</template>
+    <template #content>Content C</template>
+  </ExpansionPanelItem>
 </ExpansionPanel>
 ```
 
@@ -84,15 +85,15 @@ By default, multiple panels can be open simultaneously.
 
 ```vue
 <ExpansionPanel default-value="a">
-  <ExpansionPanel.Item value="a">
-    <ExpansionPanel.Header>Section A</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content A</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="a">
+    <template #header>Section A</template>
+    <template #content>Content A</template>
+  </ExpansionPanelItem>
 
-  <ExpansionPanel.Item value="b">
-    <ExpansionPanel.Header>Section B</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content B</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="b">
+    <template #header>Section B</template>
+    <template #content>Content B</template>
+  </ExpansionPanelItem>
 </ExpansionPanel>
 ```
 
@@ -100,32 +101,32 @@ By default, multiple panels can be open simultaneously.
 
 ```vue
 <ExpansionPanel v-model="openPanels">
-  <ExpansionPanel.Item value="a">
-    <ExpansionPanel.Header>Section A</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Content A</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="a">
+    <template #header>Section A</template>
+    <template #content>Content A</template>
+  </ExpansionPanelItem>
 
-  <ExpansionPanel.Item value="b" disabled>
-    <ExpansionPanel.Header>Disabled Section</ExpansionPanel.Header>
-    <ExpansionPanel.Content>Cannot be expanded</ExpansionPanel.Content>
-  </ExpansionPanel.Item>
+  <ExpansionPanelItem value="b" disabled>
+    <template #header>Disabled Section</template>
+    <template #content>Cannot be expanded</template>
+  </ExpansionPanelItem>
 </ExpansionPanel>
 ```
 
 ### Custom Header Content
 
 ```vue
-<ExpansionPanel.Item value="a">
-  <ExpansionPanel.Header>
+<ExpansionPanelItem value="a">
+  <template #header>
     <div class="flex items-center gap-2">
       <LucideBook class="h-4 w-4" />
       <span>Section Title</span>
     </div>
-  </ExpansionPanel.Header>
-  <ExpansionPanel.Content>
+  </template>
+  <template #content>
     <p>Rich content with custom header.</p>
-  </ExpansionPanel.Content>
-</ExpansionPanel.Item>
+  </template>
+</ExpansionPanelItem>
 ```
 
 ## API Reference
@@ -138,48 +139,25 @@ By default, multiple panels can be open simultaneously.
 | `defaultValue` | `string[]` | `[]` | Initial open panels |
 | `collapsible` | `boolean` | `false` | Allow all panels to close |
 
-### Sub-Components
-
-#### ExpansionPanel.Item
+### ExpansionPanelItem
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `value` | `string` | — | Unique identifier for this panel |
 | `disabled` | `boolean` | `false` | Disables this panel |
 
-#### ExpansionPanel.Header
-
-The clickable header of a panel.
-
-```vue
-<ExpansionPanel.Header>
-  Panel Title
-</ExpansionPanel.Header>
-```
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `class` | `string` | — | Additional CSS classes |
-
-#### ExpansionPanel.Content
-
-The expandable content area.
-
-```vue
-<ExpansionPanel.Content>
-  <p>Panel content</p>
-</ExpansionPanel.Content>
-```
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `class` | `string` | — | Additional CSS classes |
-
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `default` | ExpansionPanel.Item components |
+| `default` | ExpansionPanelItem components |
+
+#### ExpansionPanelItem Slots
+
+| Slot | Description |
+|---|---|
+| `header` | Clickable header of the panel |
+| `content` | Expandable content area |
 
 ### Emits
 

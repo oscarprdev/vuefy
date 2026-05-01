@@ -3,7 +3,7 @@ import { Popover } from '@vuetify/v0/components'
 </script>
 
 <template>
-  <Popover.Close as-child>
+  <Popover.Close>
     <slot />
   </Popover.Close>
 </template>

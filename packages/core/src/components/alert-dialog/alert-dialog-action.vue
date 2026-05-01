@@ -13,7 +13,7 @@ const resolvedClass = computed(() => {
 </script>
 
 <template>
-  <Button :class="resolvedClass" as-child>
+  <Button :class="resolvedClass">
     <slot />
   </Button>
 </template>

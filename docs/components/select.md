@@ -17,20 +17,21 @@ npx vuefy@latest add select
 ```vue
 <script setup lang="ts">
 import { Select } from '@/components/ui/select'
+import { SelectValue, SelectItem } from '@/components/ui/select'
 
 const selected = ref('')
 </script>
 
 <template>
   <Select v-model="selected">
-    <Select.Trigger>
-      <Select.Value placeholder="Select a fruit..." />
-    </Select.Trigger>
-    <Select.Content>
-      <Select.Item value="apple">Apple</Select.Item>
-      <Select.Item value="banana">Banana</Select.Item>
-      <Select.Item value="cherry">Cherry</Select.Item>
-    </Select.Content>
+    <template #trigger>
+      <SelectValue placeholder="Select a fruit..." />
+    </template>
+    <template #content>
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="cherry">Cherry</SelectItem>
+    </template>
   </Select>
 </template>
 ```
@@ -41,14 +42,14 @@ const selected = ref('')
 
 ```vue
 <Select v-model="selected">
-  <Select.Trigger>
-    <Select.Value placeholder="Choose an option..." />
-  </Select.Trigger>
-  <Select.Content>
-    <Select.Item value="a">Option A</Select.Item>
-    <Select.Item value="b">Option B</Select.Item>
-    <Select.Item value="c">Option C</Select.Item>
-  </Select.Content>
+  <template #trigger>
+    <SelectValue placeholder="Choose an option..." />
+  </template>
+  <template #content>
+    <SelectItem value="a">Option A</SelectItem>
+    <SelectItem value="b">Option B</SelectItem>
+    <SelectItem value="c">Option C</SelectItem>
+  </template>
 </Select>
 ```
 
@@ -56,7 +57,13 @@ const selected = ref('')
 
 ```vue
 <Select default-value="apple">
-  <!-- ... -->
+  <template #trigger>
+    <SelectValue />
+  </template>
+  <template #content>
+    <SelectItem value="a">Option A</SelectItem>
+    <SelectItem value="b">Option B</SelectItem>
+  </template>
 </Select>
 ```
 
@@ -64,12 +71,12 @@ const selected = ref('')
 
 ```vue
 <Select v-model="selected" disabled>
-  <Select.Trigger>
-    <Select.Value placeholder="Disabled..." />
-  </Select.Trigger>
-  <Select.Content>
-    <Select.Item value="a">Option A</Select.Item>
-  </Select.Content>
+  <template #trigger>
+    <SelectValue placeholder="Disabled..." />
+  </template>
+  <template #content>
+    <SelectItem value="a">Option A</SelectItem>
+  </template>
 </Select>
 ```
 
@@ -77,14 +84,14 @@ const selected = ref('')
 
 ```vue
 <Select v-model="selected">
-  <Select.Trigger>
-    <Select.Value placeholder="Select..." />
-  </Select.Trigger>
-  <Select.Content>
-    <Select.Item value="a">Active</Select.Item>
-    <Select.Item value="b" disabled>Disabled Option</Select.Item>
-    <Select.Item value="c">Also Active</Select.Item>
-  </Select.Content>
+  <template #trigger>
+    <SelectValue placeholder="Select..." />
+  </template>
+  <template #content>
+    <SelectItem value="a">Active</SelectItem>
+    <SelectItem value="b" disabled>Disabled Option</SelectItem>
+    <SelectItem value="c">Also Active</SelectItem>
+  </template>
 </Select>
 ```
 
@@ -92,16 +99,16 @@ const selected = ref('')
 
 ```vue
 <Select v-model="selected">
-  <Select.Trigger>
+  <template #trigger>
     <div class="flex items-center gap-2">
       <span class="text-sm">Selected:</span>
-      <Select.Value placeholder="Choose..." />
+      <SelectValue placeholder="Choose..." />
     </div>
-  </Select.Trigger>
-  <Select.Content>
-    <Select.Item value="apple">Apple</Select.Item>
-    <Select.Item value="banana">Banana</Select.Item>
-  </Select.Content>
+  </template>
+  <template #content>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+  </template>
 </Select>
 ```
 
@@ -116,27 +123,39 @@ const selected = ref('')
 | `disabled` | `boolean` | `false` | Disables the select |
 | `required` | `boolean` | `false` | Marks as required |
 
-### Select.Trigger
+### Slots
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `disabled` | `boolean` | `false` | Disables the trigger |
-| `class` | `string` | — | Additional CSS classes |
+| Slot | Description |
+|---|---|
+| `trigger` | Select trigger area — place `SelectValue` here |
+| `content` | Dropdown content — place `SelectItem` components here |
 
-### Select.Value
+### Emits
+
+| Event | Payload | Description |
+|---|---|---|
+| `update:modelValue` | `string` | Emitted when the selected value changes |
+
+### Standalone Components
+
+#### SelectValue
+
+Place inside `#trigger` to display the selected value or placeholder.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `placeholder` | `string` | `""` | Placeholder when nothing is selected |
 | `class` | `string` | — | Additional CSS classes |
 
-### Select.Content
+```vue
+<template #trigger>
+  <SelectValue placeholder="Choose..." />
+</template>
+```
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `class` | `string` | — | Additional CSS classes |
+#### SelectItem
 
-### Select.Item
+Place inside `#content` for each option.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
@@ -144,14 +163,8 @@ const selected = ref('')
 | `disabled` | `boolean` | `false` | Disables this item |
 | `class` | `string` | — | Additional CSS classes |
 
-### Slots
-
-| Slot | Description |
-|---|---|
-| `default` | Select.Trigger and Select.Content components |
-
-### Emits
-
-| Event | Payload | Description |
-|---|---|---|
-| `update:modelValue` | `string` | Emitted when the selected value changes |
+```vue
+<template #content>
+  <SelectItem value="apple">Apple</SelectItem>
+</template>
+```
