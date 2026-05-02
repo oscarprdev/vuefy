@@ -8,4 +8,5 @@ import ExpansionPanelItem from './expansion-panel-item.vue'
 ExpansionPanel.Item = ExpansionPanelItem
 
 export default ExpansionPanel
+export { ExpansionPanel }
 export { ExpansionPanelItem }

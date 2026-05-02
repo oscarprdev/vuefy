@@ -2,6 +2,13 @@
 outline: deep
 ---
 
+<script setup>
+import DemoDialogBasic from './demo/dialog-basic.vue'
+import DemoDialogForm from './demo/dialog-form.vue'
+import DemoDialogCustomTrigger from './demo/dialog-custom-trigger.vue'
+import DemoDialogClose from './demo/dialog-close.vue'
+</script>
+
 # Dialog
 
 A window overlaid on either the primary window or another dialog, rendering the content underneath inert.
@@ -41,45 +48,58 @@ const open = ref(false)
 
 ## Examples
 
-### With Header and Footer
+### Basic Dialog
+
+<DemoDialogBasic />
 
 ```vue
-<Dialog v-model:open="open">
-  <template #trigger>
-    <Button>Open</Button>
-  </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Dialog } from '@/components/ui/dialog'
+import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
-  <template #content>
-    <DialogTitle>Edit Profile</DialogTitle>
-    <DialogDescription>
-      Make changes to your profile here.
-    </DialogDescription>
+const open = ref(false)
+</script>
 
-    <div class="space-y-4 py-4">
-      <!-- form fields -->
-    </div>
+<template>
+  <Dialog v-model:open="open">
+    <template #trigger>
+      <Button>Edit Profile</Button>
+    </template>
 
-    <div class="flex justify-end gap-2">
-      <DialogClose>
-        <Button variant="outline">Cancel</Button>
-      </DialogClose>
-      <Button>Save</Button>
-    </div>
-  </template>
-</Dialog>
+    <template #content>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here.
+      </DialogDescription>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <DialogClose>
+          <Button variant="outline">Cancel</Button>
+        </DialogClose>
+        <Button>Save</Button>
+      </div>
+    </template>
+  </Dialog>
+</template>
 ```
 
 ### With Form
 
+<DemoDialogForm />
+
 ```vue
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Dialog } from '@/components/ui/dialog'
 import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 const open = ref(false)
-const name = ref('')
+const username = ref('')
+const email = ref('')
 </script>
 
 <template>
@@ -95,8 +115,11 @@ const name = ref('')
       </DialogDescription>
 
       <div class="space-y-4 py-4">
-        <Input v-model="name" placeholder="Username">
+        <Input v-model="username" placeholder="Username">
           <template #label>Username</template>
+        </Input>
+        <Input v-model="email" type="email" placeholder="Email">
+          <template #label>Email</template>
         </Input>
       </div>
 
@@ -113,32 +136,80 @@ const name = ref('')
 
 ### Trigger with Custom Element
 
-```vue
-<Dialog v-model:open="open">
-  <template #trigger>
-    <a href="#" @click.prevent="open = true">Open dialog</a>
-  </template>
+<DemoDialogCustomTrigger />
 
-  <template #content>
-    <DialogTitle>Custom Trigger</DialogTitle>
-    <DialogDescription>Triggered by a link.</DialogDescription>
-    <DialogClose><Button variant="outline">Close</Button></DialogClose>
-  </template>
-</Dialog>
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Dialog } from '@/components/ui/dialog'
+import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+
+const open = ref(false)
+</script>
+
+<template>
+  <Dialog v-model:open="open">
+    <template #trigger>
+      <a href="#" @click.prevent="open = true" class="text-primary underline">
+        Open dialog
+      </a>
+    </template>
+
+    <template #content>
+      <DialogTitle>Custom Trigger</DialogTitle>
+      <DialogDescription>
+        This dialog is triggered by a link instead of a button.
+      </DialogDescription>
+      <div class="flex justify-end mt-4">
+        <DialogClose>
+          <Button variant="outline">Close</Button>
+        </DialogClose>
+      </div>
+    </template>
+  </Dialog>
+</template>
 ```
 
 ### Close Button
 
+<DemoDialogClose />
+
 ```vue
-<Dialog v-model:open="open">
-  <template #content>
-    <DialogTitle>Dialog</DialogTitle>
-    <DialogDescription>Content goes here.</DialogDescription>
-    <DialogClose>
-      <Button variant="ghost" size="sm">✕</Button>
-    </DialogClose>
-  </template>
-</Dialog>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Dialog } from '@/components/ui/dialog'
+import { DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+
+const open = ref(false)
+</script>
+
+<template>
+  <Dialog v-model:open="open">
+    <template #trigger>
+      <Button>Confirm Action</Button>
+    </template>
+
+    <template #content>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogDescription>
+        Are you sure you want to proceed?
+      </DialogDescription>
+      <div class="flex justify-between items-center mt-4">
+        <DialogClose>
+          <Button variant="ghost" size="sm">✕</Button>
+        </DialogClose>
+        <div class="flex gap-2">
+          <DialogClose>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Destruct</Button>
+        </div>
+      </div>
+    </template>
+  </Dialog>
+</template>
 ```
 
 ## Composition

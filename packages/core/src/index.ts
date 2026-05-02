@@ -58,3 +58,54 @@ export { default as ExpansionPanelItem } from './components/expansion-panel/expa
 
 // Tabs standalone components
 export { default as TabsItem } from './components/tabs/tabs-item.vue'
+
+// Table compound components
+export { default as Table } from './components/table/table.vue'
+export { default as TableHead } from './components/table/table-head.vue'
+export { default as TableBody } from './components/table/table-body.vue'
+export { default as TableRow } from './components/table/table-row.vue'
+export { default as TableCell } from './components/table/table-cell.vue'
+export { default as TableFooter } from './components/table/table-footer.vue'
+
+// Tooltip compound components
+export { default as Tooltip } from './components/tooltip/tooltip.vue'
+export { default as TooltipTrigger } from './components/tooltip/tooltip-trigger.vue'
+export { default as TooltipContent } from './components/tooltip/tooltip-content.vue'
+export { default as TooltipClose } from './components/tooltip/tooltip-close.vue'
+
+// Toast component
+export { default as Toast } from './components/toast/toast.vue'
+
+// DropdownMenu compound components
+export { default as DropdownMenu } from './components/dropdown-menu/dropdown-menu.vue'
+export { default as DropdownMenuItem } from './components/dropdown-menu/dropdown-menu-item.vue'
+export { default as DropdownMenuSeparator } from './components/dropdown-menu/dropdown-menu-separator.vue'
+export { default as DropdownMenuLabel } from './components/dropdown-menu/dropdown-menu-label.vue'
+export { default as DropdownMenuShortcut } from './components/dropdown-menu/dropdown-menu-shortcut.vue'
+export { default as DropdownMenuGroup } from './components/dropdown-menu/dropdown-menu-group.vue'
+export { default as DropdownMenuCheckboxItem } from './components/dropdown-menu/dropdown-menu-checkbox-item.vue'
+export { default as DropdownMenuRadioItem } from './components/dropdown-menu/dropdown-menu-radio-item.vue'
+export { default as DropdownMenuSub } from './components/dropdown-menu/dropdown-menu-sub.vue'
+
+// Badge component
+export { default as Badge } from './components/badge/badge.vue'
+
+// Card compound components
+export { default as Card } from './components/card/card.vue'
+export { default as CardHeader } from './components/card/card-header.vue'
+export { default as CardTitle } from './components/card/card-title.vue'
+export { default as CardDescription } from './components/card/card-description.vue'
+export { default as CardContent } from './components/card/card-content.vue'
+export { default as CardFooter } from './components/card/card-footer.vue'
+
+// Textarea component
+export { default as Textarea } from './components/textarea/textarea.vue'
+
+// Separator component
+export { default as Separator } from './components/separator/separator.vue'
+
+// Progress component
+export { default as Progress } from './components/progress/progress.vue'
+
+// Skeleton component
+export { default as Skeleton } from './components/skeleton/skeleton.vue'

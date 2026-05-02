@@ -7,4 +7,5 @@ import DialogDescription from './dialog-description.vue'
 import DialogClose from './dialog-close.vue'
 
 export default Dialog
+export { Dialog }
 export { DialogTitle, DialogDescription, DialogClose }

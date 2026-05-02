@@ -30,6 +30,18 @@ export const registry: Record<string, string> = {
   pagination: './components/pagination/pagination.vue',
   slider: './components/slider/slider.vue',
   splitter: './components/splitter/splitter.vue',
+
+  // New components
+  table: './components/table/table.vue',
+  tooltip: './components/tooltip/tooltip.vue',
+  toast: './components/toast/toast.vue',
+  'dropdown-menu': './components/dropdown-menu/dropdown-menu.vue',
+  badge: './components/badge/badge.vue',
+  card: './components/card/card.vue',
+  textarea: './components/textarea/textarea.vue',
+  separator: './components/separator/separator.vue',
+  progress: './components/progress/progress.vue',
+  skeleton: './components/skeleton/skeleton.vue',
 }
 
 // Dependency map for auto-resolution during `vuefy add`
@@ -58,6 +70,18 @@ export const dependencies: Record<string, string[]> = {
   'number-field': [],
   rating: [],
   button: [],
+
+  // New components
+  table: [],
+  tooltip: [],
+  toast: [],
+  'dropdown-menu': [],
+  badge: [],
+  card: [],
+  textarea: [],
+  separator: [],
+  progress: [],
+  skeleton: [],
 }
 
 export type ComponentName = keyof typeof registry

@@ -9,4 +9,5 @@ Splitter.Panel = SplitterPanel
 Splitter.Handle = SplitterHandle
 
 export default Splitter
+export { Splitter }
 export { SplitterPanel, SplitterHandle }

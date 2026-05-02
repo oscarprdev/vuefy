@@ -2,6 +2,14 @@
 outline: deep
 ---
 
+<script setup>
+import DemoButtonVariants from './demo/button-variants.vue'
+import DemoButtonSizes from './demo/button-sizes.vue'
+import DemoButtonLoading from './demo/button-loading.vue'
+import DemoButtonIcon from './demo/button-icon.vue'
+import DemoButtonDisabled from './demo/button-disabled.vue'
+</script>
+
 # Button
 
 Displays a button or a component that looks like a button.
@@ -32,6 +40,8 @@ import { Button } from '@/components/ui/button'
 
 Use the `variant` prop to change the visual style of the button.
 
+<DemoButtonVariants />
+
 ```vue
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
@@ -52,6 +62,8 @@ import { Button } from '@/components/ui/button'
 
 Use the `size` prop to change the size of the button.
 
+<DemoButtonSizes />
+
 ```vue
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
@@ -69,6 +81,8 @@ import { Button } from '@/components/ui/button'
 ### Loading State
 
 Use the `loading` prop to show a loading spinner.
+
+<DemoButtonLoading />
 
 ```vue
 <script setup lang="ts">
@@ -97,19 +111,29 @@ You can also customize the loading icon with the `loading` slot:
 
 Use the `icon` slot to add an icon inside the button.
 
+<DemoButtonIcon />
+
 ```vue
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import { LucidePlus } from 'lucide-vue-next'
+import { LucidePlus, LucideHeart } from 'lucide-vue-next'
 </script>
 
 <template>
-  <Button>
-    <template #icon>
-      <LucidePlus />
-    </template>
-    Create
-  </Button>
+  <div class="flex gap-2">
+    <Button>
+      <template #icon>
+        <LucidePlus />
+      </template>
+      Create
+    </Button>
+    <Button variant="outline">
+      <template #icon>
+        <LucideHeart />
+      </template>
+      Like
+    </Button>
+  </div>
 </template>
 ```
 
@@ -117,11 +141,24 @@ import { LucidePlus } from 'lucide-vue-next'
 
 Use the `disabled` prop to disable the button.
 
+<DemoButtonDisabled />
+
 ```vue
 <Button disabled>Disabled</Button>
 ```
 
 The button is also automatically disabled when `loading` is `true`.
+
+## Composition
+
+Use the following composition to build a Button:
+
+```
+Button
+├── #default slot (button text)
+├── #icon slot (icon before text)
+└── #loading slot (custom loading indicator)
+```
 
 ## API Reference
 

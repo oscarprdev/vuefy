@@ -11,4 +11,5 @@ Pagination.Prev = PaginationPrev
 Pagination.Next = PaginationNext
 
 export default Pagination
+export { Pagination }
 export { PaginationItem, PaginationPrev, PaginationNext }

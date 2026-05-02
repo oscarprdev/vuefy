@@ -2,6 +2,15 @@
 outline: deep
 ---
 
+<script setup>
+import { ref } from 'vue'
+import DemoSliderBasic from './demo/slider-basic.vue'
+import DemoSliderLabeled from './demo/slider-labeled.vue'
+import DemoSliderRange from './demo/slider-range.vue'
+import DemoSliderCustom from './demo/slider-custom.vue'
+import DemoSliderDisabled from './demo/slider-disabled.vue'
+</script>
+
 # Slider
 
 A range slider for selecting a value from a continuous range.
@@ -30,36 +39,98 @@ const value = ref([50])
 
 ### Basic
 
+<DemoSliderBasic />
+
 ```vue
-<Slider v-model="value" :max="100" />
+<script setup lang="ts">
+import { Slider } from '@/components/ui/slider'
+
+const value = ref([50])
+</script>
+
+<template>
+  <Slider v-model="value" :max="100" />
+</template>
 ```
 
-### Range (Multiple Sliders)
+### With Label and Value Display
+
+<DemoSliderLabeled />
 
 ```vue
-<Slider v-model="value" :max="100" :step="1" />
+<script setup lang="ts">
+import { Slider } from '@/components/ui/slider'
+
+const volume = ref([50])
+</script>
+
+<template>
+  <div class="space-y-2">
+    <label class="text-sm font-medium">Volume</label>
+    <Slider v-model="volume" :max="100" />
+    <p class="text-sm text-muted-foreground">{{ volume }}%</p>
+  </div>
+</template>
+```
+
+### Range (Multiple Values)
+
+<DemoSliderRange />
+
+```vue
+<script setup lang="ts">
+import { Slider } from '@/components/ui/slider'
+
+const range = ref([20, 80])
+</script>
+
+<template>
+  <Slider v-model="range" :max="100" :step="5" />
+</template>
 ```
 
 ### With Custom Max and Step
 
-```vue
-<Slider v-model="value" :max="1000" :step="10" />
-```
-
-### With Label
+<DemoSliderCustom />
 
 ```vue
-<div class="space-y-2">
-  <label class="text-sm font-medium">Volume</label>
-  <Slider v-model="value" :max="100" />
-  <p class="text-sm text-muted-foreground">{{ value }}%</p>
-</div>
+<script setup lang="ts">
+import { Slider } from '@/components/ui/slider'
+
+const price = ref([100, 800])
+</script>
+
+<template>
+  <Slider v-model="price" :max="1000" :step="10" />
+</template>
 ```
 
 ### Disabled
 
+<DemoSliderDisabled />
+
 ```vue
-<Slider v-model="value" disabled />
+<script setup lang="ts">
+import { Slider } from '@/components/ui/slider'
+
+const brightness = ref([75])
+</script>
+
+<template>
+  <Slider v-model="brightness" :max="100" disabled />
+</template>
+```
+
+## Composition
+
+Use the following composition to build a Slider:
+
+```
+Slider
+├── Slider.Track
+│   ├── Slider.Range
+│   └── Slider.Thumbs
+│       └── Slider.Thumb (x1+)
 ```
 
 ## API Reference
@@ -78,7 +149,7 @@ const value = ref([50])
 
 | Slot | Description |
 |---|---|
-| `default` | Content rendered inside the slider |
+| `default` | Content rendered inside the slider track |
 
 ### Emits
 

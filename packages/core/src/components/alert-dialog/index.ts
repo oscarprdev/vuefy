@@ -9,4 +9,5 @@ import AlertDialogAction from './alert-dialog-action.vue'
 import AlertDialogCancel from './alert-dialog-cancel.vue'
 
 export default AlertDialog
+export { AlertDialog }
 export { AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel }

@@ -11,4 +11,5 @@ RadioGroup.Label = RadioLabel
 RadioGroup.Indicator = RadioIndicator
 
 export default RadioGroup
+export { RadioGroup }
 export { RadioItem, RadioLabel, RadioIndicator }

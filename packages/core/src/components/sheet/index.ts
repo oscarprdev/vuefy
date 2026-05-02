@@ -7,4 +7,5 @@ import SheetDescription from './sheet-description.vue'
 import SheetClose from './sheet-close.vue'
 
 export default Sheet
+export { Sheet }
 export { SheetTitle, SheetDescription, SheetClose }

@@ -11,4 +11,5 @@ Treeview.Label = TreeviewLabel
 Treeview.Indicator = TreeviewIndicator
 
 export default Treeview
+export { Treeview }
 export { TreeViewItem, TreeviewLabel, TreeviewIndicator }

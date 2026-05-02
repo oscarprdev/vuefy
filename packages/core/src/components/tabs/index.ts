@@ -8,4 +8,5 @@ import TabsItem from './tabs-item.vue'
 Tabs.Item = TabsItem
 
 export default Tabs
+export { Tabs }
 export { TabsItem }

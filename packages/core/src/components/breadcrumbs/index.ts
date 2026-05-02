@@ -9,4 +9,5 @@ Breadcrumbs.Item = BreadcrumbsItem
 Breadcrumbs.Link = BreadcrumbsLink
 
 export default Breadcrumbs
+export { Breadcrumbs }
 export { BreadcrumbsItem, BreadcrumbsLink }

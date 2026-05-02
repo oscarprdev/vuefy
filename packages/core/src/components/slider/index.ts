@@ -9,4 +9,5 @@ Slider.Track = SliderTrack
 Slider.Thumb = SliderThumb
 
 export default Slider
+export { Slider }
 export { SliderTrack, SliderThumb }
